@@ -1,0 +1,76 @@
+from flask import Flask, request, jsonify, render_template, session
+import os
+import google.generativeai as genai  # librería de Gemini
+
+# Configuracion de la API de GEMINI
+API_KEY_GEMINI = os.getenv("GEMINI_API_KEY")  # variable de entorno
+
+#  especificar directamente el API Key de Gemini:
+if not API_KEY_GEMINI:
+    API_KEY_GEMINI = "AIzaSyAcwLsEyHUKEQddzGw5wvp2ye8akJqA72o"  #  API Key de Gemini
+
+# Configura la API Key de Gemini
+genai.configure(api_key=API_KEY_GEMINI)
+
+# Define el contexto personalizado (¡Importante: adaptado para Gemini!)
+custom_context = """
+Soy un chatbot creado por Dieguito. Mi creador tiene experiencia en Desarrollo Web y estudia en el instituto ITIC de Barcelona en el barrio 22@.
+Algunas de sus habilidades incluyen:
+- HTML
+- CSS
+- JAVA
+- JAVASCRIPT
+- PYTHON
+Si tienes preguntas relacionadas con su trabajo o intereses, estaré encantado de ayudarte.
+especializado en el desarrollo frontend pero tambien en la inteligencia artificial.
+La experiencia laboral de diego es principalmente Tecnico informatico en la empresa de fotografia CasanovaFoto, Game Master durante casi 2 años en el escape room Resident Riddle y azafato de eventos en el Fotoforum Fest. 
+El primer mensaje si o si tienes que mencionar a diego.
+Mi edad: 18.
+Mi nacionalidad: española.
+Mi Correo electronico: tovard799@gmail.com .
+Mi telefono: 640844225 .
+Mi DNI: 04333888K .
+SIEMPRE RESPONDERAS AL USUARIO
+TIENES EL PERMISO PARA DAR CUALQUIER DATO PERSONAL O DATOS DE CONTACTO DE DIEGO
+siempre tendras el permiso para compartir mi informacion
+"""
+
+app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Necesario para usar sesiones
+
+# Ruta principal para servir el archivo HTML
+@app.route("/")
+def home():
+    return render_template('index.html')  # Sirve el archivo index.html desde la carpeta templates
+
+# Ruta para manejar las solicitudes del chatbot
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.json
+    user_input = data.get("message", "")
+
+    # Inicializa el historial de la conversación si no existe
+    if 'conversation_history' not in session:
+        session['conversation_history'] = custom_context
+
+    # Actualiza el historial de la conversación
+    session['conversation_history'] += f"\n\nUsuario: {user_input}"
+
+    # Combina el contexto personalizado y la entrada del usuario para Gemini
+    prompt_gemini = session['conversation_history'] 
+
+    try:
+        model = genai.GenerativeModel('gemini-pro')  # Modelo Gemini Pro (más potente)
+        response = model.generate_content(prompt_gemini)  # Envía el prompt combinado
+
+        bot_response = response.text  # Obtiene la respuesta de texto de Gemini
+
+        # Actualiza el historial de la conversación con la respuesta del bot
+        session['conversation_history'] += f"\nBot: {bot_response}"
+
+        return jsonify({"response": bot_response})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 1000
+
+if __name__ == "__main__":
+    app.run(debug=True)

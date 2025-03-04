@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEVELOPER DIEGO</title>
+    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="input.css">
+    <link rel="stylesheet" href="output.css">
+    <!-- Typed.js -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        woodsmoke: {
+                            '50': '#f1f7fa',
+                            '100': '#dbe9f2',
+                            '200': '#bbd3e6',
+                            '300': '#8cb4d4',
+                            '400': '#568dba',
+                            '500': '#3b719f',
+                            '600': '#345c86',
+                            '700': '#2f4d6f',
+                            '800': '#2e425c',
+                            '900': '#2a394f',
+                            '950': '#040609',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --color-woodsmoke-50: #f1f7fa;
+            --color-woodsmoke-100: #dbe9f2;
+            --color-woodsmoke-200: #bbd3e6;
+            --color-woodsmoke-300: #8cb4d4;
+            --color-woodsmoke-400: #568dba;
+            --color-woodsmoke-500: #3b719f;
+            --color-woodsmoke-600: #345c86;
+            --color-woodsmoke-700: #2f4d6f;
+            --color-woodsmoke-800: #2e425c;
+            --color-woodsmoke-900: #2a394f;
+            --color-woodsmoke-950: #040609;
+            --button-background: #2f4d6f;
+            --background-header: #0a0013;
+            --color-pruena: #0d0014;
+        }
+        
+        .animate {
+            animation: fadeIn 3s ease-in-out forwards;
+        }
+
+        .animate2 {
+            animation: fadeIn 3.5s ease-in-out forwards;
+        }
+        
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            
+            
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .chat-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-break: break-word;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background-color: #4a0eff;
+            color: white;
+            border-radius: 15px 15px 0 15px;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background-color: #2a0080;
+            color: white;
+            border-radius: 15px 15px 15px 0;
+        }
+        
+        .myInput {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .myInput:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="bg-[#040609] bg-cover bg-repeat overflow-x-hidden">
+    <!-- Header -->
+    <div class="relative flex justify-center">
+        <header
+        class="header fixed z-10 w-[95%] md:w-[90%] lg:w-[80dvw] h-[9dvh] my-3 bg-[#0d0014]/70 rounded-lg border-[0.1px] border-amber-50/50 flex justify-between px-4 md:px-10 items-center transition-transform duration-300">
+        <div class="flex items-center">
+            <img src="logo-diego.png" alt="emoji-programer" class="w-[3em] md:w-[4em]">
+            <h1 class="text-stone-50 ml-3 text-lg md:text-2xl">Diego Zaldivar</h1>
+        </div>
+        <div class="hidden md:flex space-x-3">
+            <a href="#" class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Chat</a>
+                <a href="#"
+                class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Proyectos</a>
+                <a href="#"
+                class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Experiencia</a>
+                <a href="#"
+                class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Contacto</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white" aria-label="Menú de navegación">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+    </div>
+    
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu"
+        class="fixed top-[12dvh] left-0 w-full bg-[#0d0014] border border-amber-50/50 rounded-b-lg p-4 z-20 hidden">
+        <div class="flex flex-col space-y-3">
+            <a href="#" class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Chat</a>
+            <a href="#" class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Proyectos</a>
+            <a href="#"
+            class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Experiencia</a>
+            <a href="#" class="text-stone-50 hover:bg-gray-800/70 transition duration-300 p-3 rounded-lg">Contacto</a>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section
+    class="w-screen h-screen flex justify-center items-center bg-gradient-to-b  from-[#11001b] to-[#000]">
+    <div class="flex flex-col justify-center text-white items-center px-4 w-[90%] md:w-auto">
+        <span class="text-3xl md:text-6xl text-white flex justify-center font-bold mb-2 animate">
+            Hola
+            <span class="text-3xl md:text-6xl" aria-hidden="true">👋🏼</span>
+        </span>
+        <div class="flex flex-col md:flex-row justify-center text-center md:text-left">
+            <h1 class="text-xl md:text-4xl text-white animate2">Soy</h1>
+            <h1 class="text-xl md:text-4xl md:ml-2 font-bold animate2 text-white"> Diego Tovar</h1>
+            <h1 class="text-xl md:text-4xl text-white animate2">un Estudiante Full stack</h1>
+        </div>
+        <p id="typed-text" class="text-xl md:text-2xl w-full md:w-xl text-center mt-3 text-fuchsia-50"></p>
+    </div>
+</section>
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <!-- Chat Section -->
+    <section class="w-screen h-screen bg-gradient-to-b from-[#000] to-[#11001b]">
+        <div class="flex flex-col items-center mb-6">
+            <h1 class="text-slate-50 text-4xl font-bold">Marot</h1>
+            <p class="text-slate-50 w-96 text-center mt-2.5 mb-4">Preguntale a Marot cualquier duda que tengas sobre mi,
+                tambien puedes preguntarle lo que sea pero esta especializado en el desarrollo Frontend</p>
+            </div>
+            <div class="flex justify-center">
+                <div class="chat-container rounded-2xl border-2 border-amber-50 bg-[#000000e0]">
+                    <div class="chat-body" id="chat-body"></div>
+                    <div class="chat-footer bg-[#0d0d0e] flex justify-between items-center p-4">
+                        <textarea class="myInput text-white w-full h-auto max-h-72 resize-none" id="user-input"
+                        placeholder="Escribe tu mensaje..."></textarea>
+                        <button id="button" onclick="sendMessage()" class="bg-amber-300 ml-4 p-2 rounded">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    <!-- Skills Section -->
+    <section class="w-screen min-h-screen bg-[#11001b] flex justify-center py-10">
+        <div class="flex flex-col gap-10 items-center justify-center h-fit px-4">
+            <div class="pt-11 text-white flex-col items-center justify-center gap-3.5">
+                <h1 class="font-bold text-3xl md:text-4xl w-full flex justify-center text-center">Habilidades</h1>
+                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                    <img src="https://skillicons.dev/icons?i=git" alt="Git" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=html" alt="HTML" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=css" alt="CSS" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=figma" alt="Figma" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=wordpress" alt="WordPress"
+                        class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=linux" alt="Linux" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=java" alt="Java" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=vercel" alt="Vercel" class="w-12 h-12 md:w-16 md:h-16">
+                </div>
+            </div>
+            <div class="pt-11 text-white flex flex-col items-center justify-center">
+                <h1 class="font-bold text-2xl md:text-4xl text-white w-full flex justify-center text-center">
+                    Habilidades en las que me estoy desarrollando
+                </h1>
+                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                    <img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=python" alt="Python" class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=javascript" alt="JavaScript"
+                        class="w-12 h-12 md:w-16 md:h-16">
+                    <img src="https://skillicons.dev/icons?i=azure" alt="Azure" class="w-12 h-12 md:w-16 md:h-16">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile Menu Toggle
+            document.addEventListener('DOMContentLoaded', function () {
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const header = document.querySelector('.header');
+                let lastScroll = 0;
+
+                // Header scroll behavior
+                window.addEventListener('scroll', () => {
+                    const currentScroll = window.pageYOffset;
+                    
+                    if (currentScroll <= 0) {
+                        header.classList.remove('translate-y-0', '-translate-y-full');
+                    } else if (currentScroll > lastScroll && !header.classList.contains('-translate-y-full')) {
+                        // Scrolling down
+                        header.classList.remove('translate-y-0');
+                        header.classList.add('-translate-y-full');
+                    } else if (currentScroll < lastScroll && header.classList.contains('-translate-y-full')) {
+                        // Scrolling up
+                        header.classList.remove('-translate-y-full');
+                        header.classList.add('translate-y-0');
+                    }
+                    
+                    lastScroll = currentScroll;
+                });
+
+                mobileMenuButton.addEventListener('click', function () {
+                    if (mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.remove('hidden');
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+
+                // Typed.js animation
+                new Typed('#typed-text', {
+                    strings: ['En constante aprendizaje y adaptación a las últimas tendencias del desarrollo web'],
+                    typeSpeed: 50,
+                    backSpeed: 0,
+                    loop: false
+                });
+            });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
