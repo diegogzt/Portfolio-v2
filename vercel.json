@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "routes": [
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/api/chat",
+            "dest": "/api/chat.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/static/$1"
+        }
+    ],
+    "env": {
+        "OPENAI_API_KEY": "sk-eb84e6b408164943bae95df877b0685b"
+    },
+    "functions": {
+        "api/chat.js": {
+            "memory": 1024,
+            "maxDuration": 60
+        }
+    }
+}
