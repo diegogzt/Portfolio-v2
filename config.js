@@ -31,14 +31,4 @@ export async function getChatCompletion(userMessage, abortSignal = null) {
 
     return response.choices[0].message.content;
 }
-
-// Extract the context to a function to keep it DRY
-function getCustomContext() {
-    return `
-Contexto del Chatbot:
-
-¡Hola! Soy un chatbot creado por Diego, un apasionado desarrollador web de 18 años que reside en la vibrante ciudad de Barcelona...
-    
-    // ... rest of your context
-    `;
 }
