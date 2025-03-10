@@ -72,7 +72,6 @@ body {
     max-height: 90vh;
     height: fit-content;
     width: 90%;
-    max-width: 800px;
     background: rgba(13, 0, 26, 0.85);
     border-radius: 16px;
     box-shadow: var(--box-shadow);
@@ -81,17 +80,26 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
     margin: 0 auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* Cuerpo del chat */
 .chat-body {
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     height: calc(100% - 110px);
     padding: 16px;
-    overflow-y: auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     width: calc(100% - 20px);
+min-height: 50dvh;
     background-color: rgba(0, 0, 0, 0.2);
     margin: 0 auto;
     scrollbar-width: none;
@@ -102,10 +110,10 @@ body {
 .chat-footer {
     display: flex;
     padding: 14px;
-    background: rgba(25, 0, 50, 0.7);
+    background: #1A0F35;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    width: 97%;
     margin: 0 auto 15px auto;
     border-radius: 12px;
     border: 1px solid var(--border-color);
@@ -131,7 +139,7 @@ body {
     width: 100%;
     height: auto;
     max-height: 200px;
-    overflow: hidden;
+    overflow: scroll;
     box-sizing: border-box;
     padding: 8px;
     border: 1px solid #ccc;
@@ -425,9 +433,9 @@ body {
     animation: pulse 2s infinite;
 }
 
-.dynamic-bg {
+    .dynamic-bg {
     background: var(--gradient-background);
-    background-size: 400% 400%;
+    background-size: 400% 2000%;
     animation: gradientBackground 15s ease infinite;
 }
 
