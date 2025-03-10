@@ -317,39 +317,40 @@
 
 <body class=" bg-[#0A0118]  dynamic-bg overflow-x-hidden">
     <!-- Header -->
-    <div class="relative flex justify-center">
+    <div class="relative w-full">
         <header
-class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0.1px] border-x-purple-500/30 flex justify-between px-44 items-center transition-transform duration-300 shadow-lg shadow-purple-900/10">        <div class="flex items-center">
-            <a href="https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/" target="_blank" rel="noopener noreferrer" class="flex items-center hover:opacity-80 transition-opacity">
-                <img src="logo-diego.png" alt="emoji-programer" class="w-[3em] md:w-[4em]">
-                <h1 class="text-stone-50 ml-3 text-lg md:text-2xl">Diego Zaldivar</h1>
-            </a>
-        </div>
-        <div class="hidden md:flex space-x-4">
-            <a href="#" class="nav-link">Chat</a>
-            <a href="#" class="nav-link">Habilidades</a>
-            <a href="#" class="nav-link">Proyectos</a>
-            <a href="#" class="nav-link">Contacto</a>
-        </div>
-        <button id="mobile-menu-button" class="md:hidden text-white" aria-label="Menú de navegación">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-    </header>
+class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-purple-500/30 flex justify-between px-0 md:px-8 lg:px-16 items-center transition-transform duration-300 shadow-md shadow-purple-900/10">        
+            <div class="flex items-center min-w-0 flex-shrink-0 ml-4 lg:ml-0">
+                <a href="https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/" target="_blank" rel="noopener noreferrer" class="flex items-center hover:opacity-80 transition-opacity">
+                    <img src="logo-diego.png" alt="emoji-programer" class="w-[2.5em] sm:w-[2.8em] md:w-[3.2em] lg:w-[4em] flex-shrink-0">
+                    <h1 class="text-stone-50 ml-2 sm:ml-2 md:ml-3 text-sm sm:text-base md:text-lg lg:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">Diego Zaldivar</h1>
+                </a>
+            </div>
+            <div class="hidden md:flex space-x-2 lg:space-x-4 mr-2 lg:mr-0">
+                <a href="#chat-section" class="nav-link">Chat</a>
+                <a href="#skills-section" class="nav-link">Habilidades</a>
+                <a href="#proyectos-section" class="nav-link">Proyectos</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white p-2 flex-shrink-0 mr-2 lg:mr-0" aria-label="Menú de navegación">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </header>
     </div>
     
     <!-- Mobile Menu (Hidden by default) -->
     <div id="mobile-menu"
-        class="fixed top-[12dvh] left-0 w-full border border-amber-50/50 rounded-b-lg p-4 z-20 hidden">
+        class="fixed top-[12dvh] left-0 w-full border border-purple-600/30 rounded-b-lg p-4 z-20 opacity-0 -translate-y-8 pointer-events-none transform transition-all duration-300 ease-in-out bg-[#0A0118]/80 backdrop-blur-md shadow-lg shadow-purple-900/20">
         <div class="flex flex-col space-y-3">
-            <a href="#" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Chat</a>
-            <a href="#" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Proyectos</a>
-            <a href="#" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Experiencia</a>
-            <a href="#" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Contacto</a>
+            <a href="#chat-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Chat</a>
+            <a href="#skills-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Habilidades</a>
+            <a href="#proyectos-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Proyectos</a>
+            <a href="#contacto" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Contacto</a>
         </div>
     </div>
     
@@ -450,7 +451,7 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         
     <!-- Skills Section -->
-    <section class="w-screen min-h-screen flex justify-center py-28 mb-20">
+    <section id="skills-section" class="w-screen min-h-screen flex justify-center py-28 mb-20">
         <div class="container mx-auto px-6 max-w-6xl">
             <!-- Encabezado de la sección -->
             <div class="text-center mb-20">
@@ -619,7 +620,7 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
     </div>
 
     <!-- Sección de Proyectos -->
-    <section class="w-full py-28 mb-20">
+    <section id="proyectos-section" class="w-full py-28 mb-20">
         <div class="container mx-auto px-6 max-w-6xl">
             <!-- Encabezado de la sección -->
             <div class="text-center mb-20">
@@ -909,6 +910,7 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
                 const mobileMenuButton = document.getElementById('mobile-menu-button');
                 const mobileMenu = document.getElementById('mobile-menu');
                 const header = document.querySelector('.header');
+                const headerHeight = header.offsetHeight;
                 let lastScroll = 0;
 
                 // Header scroll behavior
@@ -931,18 +933,33 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
                 });
 
                 mobileMenuButton.addEventListener('click', function () {
-                    if (mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.remove('hidden');
+                    if (mobileMenu.classList.contains('opacity-0')) {
+                        // Mostrar el menú con animación
+                        mobileMenu.classList.remove('opacity-0', '-translate-y-8', 'pointer-events-none');
+                        mobileMenu.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
                     } else {
-                        mobileMenu.classList.add('hidden');
+                        // Ocultar el menú con animación
+                        mobileMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                        mobileMenu.classList.add('opacity-0', '-translate-y-8', 'pointer-events-none');
                     }
                 });
 
                 // Close menu when clicking outside
                 document.addEventListener('click', function (event) {
-                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
-                        mobileMenu.classList.add('hidden');
+                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target) && 
+                        mobileMenu.classList.contains('opacity-100')) {
+                        // Ocultar el menú con animación
+                        mobileMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                        mobileMenu.classList.add('opacity-0', '-translate-y-8', 'pointer-events-none');
                     }
+                });
+
+                // Cerrar el menú al hacer clic en un enlace
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                        mobileMenu.classList.add('opacity-0', '-translate-y-8', 'pointer-events-none');
+                    });
                 });
 
                 // Typed.js animation
@@ -954,7 +971,7 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
                     showCursor: false,
                 });
 
-                // Añadir comportamiento de desplazamiento suave para todos los enlaces internos
+                // Mejorar el comportamiento de desplazamiento suave para todos los enlaces internos
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     anchor.addEventListener('click', function (e) {
                         e.preventDefault();
@@ -962,8 +979,13 @@ class="header fixed z-10 w-full h-[9dvh]   backdrop-blur-sm rounded-lg border-[0
                         const targetElement = document.querySelector(targetId);
                         
                         if (targetElement) {
+                            // Calcular posición considerando el header fijo
+                            const headerOffset = headerHeight + 16; // altura del header + un poco de espacio
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            
                             window.scrollTo({
-                                top: targetElement.offsetTop - 100, // Offset para compensar el header fijo
+                                top: offsetPosition,
                                 behavior: 'smooth'
                             });
                         }
