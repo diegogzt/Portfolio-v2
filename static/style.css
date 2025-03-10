@@ -435,7 +435,7 @@ min-height: 50dvh;
 
     .dynamic-bg {
     background: var(--gradient-background);
-    background-size: 400% 2000%;
+    background-size: 400% 3000%;
     animation: gradientBackground 15s ease infinite;
 }
 
