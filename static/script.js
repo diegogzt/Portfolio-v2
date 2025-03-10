@@ -137,4 +137,10 @@ userInput.addEventListener("keydown", function (event) {
 });
 
 // Initialize the auto-sizing textarea when the page loads
-document.addEventListener('DOMContentLoaded', areaAuto);
+document.addEventListener('DOMContentLoaded', function() {
+    areaAuto();
+    
+    // Añadir mensaje inicial del bot
+    const initialMessage = "¡Hola! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. ¿En qué puedo ayudarte hoy?";
+    addMessage("bot", initialMessage);
+});
