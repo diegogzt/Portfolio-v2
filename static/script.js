@@ -45,12 +45,16 @@ let isRetrying = false;
 
 async function sendMessage(retryCount = 0) {
     const message = userInput.value.trim();
-    if (!message) return;
+    if (!message || message === '') {
+        // No hacer nada si el mensaje está vacío
+        return;
+    }
 
     // Only add user message on first attempt, not on retries
     if (retryCount === 0) {
         addMessage("user", message);
         userInput.value = "";
+        userInput.style.height = 'auto'; // Resetear la altura del textarea
     }
 
     userInput.disabled = true;
@@ -63,11 +67,14 @@ async function sendMessage(retryCount = 0) {
 
     // Obtener el modelo seleccionado
     const modelSelector = document.getElementById('model-selector');
-    const selectedModel = modelSelector.value;
+    const selectedModel = modelSelector.value || 'llama'; // Usar llama como fallback si no hay selección
     
     try {
+        // Obtener la URL base
+        const baseUrl = window.location.origin;
+        
         // Use a timeout promise to allow aborting long requests
-        const fetchPromise = fetch('/chat', {
+        const fetchPromise = fetch(`${baseUrl}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
@@ -150,20 +157,33 @@ userInput.addEventListener("keydown", function (event) {
     }
 });
 
+// Agregar event listener para el botón de enviar
+sendButton.addEventListener("click", function (event) {
+    if (!isRetrying) {
+        sendMessage();
+    }
+});
+
 // Initialize the auto-sizing textarea when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     areaAuto();
+    
+    // Configurar el selector de modelo antes del mensaje inicial
+    const modelSelector = document.getElementById('model-selector');
+    const statusText = document.querySelector('.text-blue-400');
+    
+    // Establecer Llama como modelo inicial
+    modelSelector.value = 'llama';
+    
+    // Guardar el modelo actual en el atributo de datos
+    statusText.setAttribute('data-current-model', 'llama');
     
     // Añadir mensaje inicial del bot
     const initialMessage = "¡Hola! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. ¿En qué puedo ayudarte hoy?";
     addMessage("bot", initialMessage);
     
     // Configurar el evento de cambio del selector de modelo
-    const modelSelector = document.getElementById('model-selector');
     modelSelector.addEventListener('change', updateModelStatus);
-    
-    // Establecer el estado inicial
-    updateModelStatus();
     
     // Configurar el tooltip
     setupTooltip();
@@ -203,32 +223,10 @@ function setupTooltip() {
     if (tooltipContainer && tooltipText) {
         tooltipContainer.addEventListener('mouseenter', () => {
             tooltipText.classList.remove('hidden');
-            // Agregar un pequeño retraso antes de mostrar la opacidad para una mejor transición
-            setTimeout(() => {
-                tooltipText.classList.add('opacity-100');
-            }, 50);
         });
         
         tooltipContainer.addEventListener('mouseleave', () => {
-            // Primero ocultar con una transición de opacidad
-            tooltipText.classList.remove('opacity-100');
-            
-            // Después de la transición, ocultar completamente
-            setTimeout(() => {
-                tooltipText.classList.add('hidden');
-            }, 300);
-        });
-    }
-    
-    // Agregar un efecto adicional al selector de modelo
-    const modelSelector = document.getElementById('model-selector');
-    if (modelSelector) {
-        modelSelector.addEventListener('change', function() {
-            // Añadir y remover una clase para un efecto visual al cambiar
-            this.classList.add('selector-pulse');
-            setTimeout(() => {
-                this.classList.remove('selector-pulse');
-            }, 500);
+            tooltipText.classList.add('hidden');
         });
     }
 }
