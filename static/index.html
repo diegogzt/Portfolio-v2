@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEVELOPER DIEGO</title>
     <!-- Tailwind CSS CDN -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="input.css">
-    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/input.css">
+    <link rel="stylesheet" href="/static/output.css">
     <!-- Typed.js -->
     <script>
         tailwind.config = {
@@ -127,6 +127,27 @@
             max-height: 500px;
             overflow-y: auto;
             padding: 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(147, 51, 234, 0.3) rgba(13, 0, 32, 0.1);
+        }
+        
+        .chat-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-body::-webkit-scrollbar-track {
+            background: rgba(13, 0, 32, 0.1);
+            border-radius: 4px;
+        }
+        
+        .chat-body::-webkit-scrollbar-thumb {
+            background: rgba(147, 51, 234, 0.3);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        
+        .chat-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(147, 51, 234, 0.5);
         }
         
         .message {
@@ -217,6 +238,7 @@
         
         .myInput:focus {
             outline: none;
+            box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.5);
         }
 
         /* Añadir estas reglas para implementar la fuente y mejorar la tipografía global */
@@ -225,7 +247,7 @@
         textarea,
         button {
             font-family: 'Poppins', sans-serif;
-            cursor: url('cursor.svg'), auto;
+            cursor: url('/static/cursor.svg'), auto;
         }
     
         h1,
@@ -239,7 +261,7 @@
 
         /* Estilos específicos para elementos interactivos */
         a, button, [role="button"], input[type="submit"], input[type="button"] {
-            cursor: url('cursor.svg'), pointer;
+            cursor: url('/static/cursor.svg'), pointer;
             transition: transform 0.2s ease;
         }
 
@@ -312,6 +334,29 @@
             height: 6px;
             opacity: 1;
         }
+        
+        /* Estilos para el tooltip */
+        .tooltip-text {
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .tooltip-text.opacity-100 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efecto pulse para el selector */
+        @keyframes selectorPulse {
+            0% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(147, 51, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+        
+        .selector-pulse {
+            animation: selectorPulse 0.5s ease-out;
+        }
     </style>
 </head>
 
@@ -322,7 +367,7 @@
 class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-purple-500/30 flex justify-between px-0 md:px-8 lg:px-16 items-center transition-transform duration-300 shadow-md shadow-purple-900/10">        
             <div class="flex items-center min-w-0 flex-shrink-0 ml-4 lg:ml-0">
                 <a href="https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/" target="_blank" rel="noopener noreferrer" class="flex items-center hover:opacity-80 transition-opacity">
-                    <img src="logo-diego.png" alt="emoji-programer" class="w-[2.5em] sm:w-[2.8em] md:w-[3.2em] lg:w-[4em] flex-shrink-0">
+                    <img src="/static/logo-diego.png" alt="emoji-programer" class="w-[2.5em] sm:w-[2.8em] md:w-[3.2em] lg:w-[4em] flex-shrink-0">
                     <h1 class="text-stone-50 ml-2 sm:ml-2 md:ml-3 text-sm sm:text-base md:text-lg lg:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">Diego Zaldivar</h1>
                 </a>
             </div>
@@ -400,42 +445,43 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <div
                     class="chat-container rounded-2xl border border-purple-500/20 bg-gradient-to-br from-[#0c0018]/90 to-[#070014]/95 backdrop-blur-xl shadow-lg shadow-purple-900/20 transition-all duration-300 w-full overflow-hidden">
                     <!-- Barra de estado -->
-                    <div class="bg-[#0d0020] p-4 border-b border-purple-900/20 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-indigo-700 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-medium">Asistente de Diego</h3>
-                            <p class="text-green-400 text-xs flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
-                                Conectado
-                            </p>
+                    <div class="bg-[#0d0020] p-4 border-b border-purple-900/20 flex items-center gap-3 justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-indigo-700 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-medium">Asistente de Diego</h3>
+                                <p class="text-green-400 text-xs flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+                                    Conectado
+                                </p>
+                            </div>
                         </div>
                         <!-- Selector de modelo -->
-                        <div class="ml-auto flex items-center space-x-2 mb-2">
-                            <div id="model-selector-container" class="relative flex items-center">
-                                <label for="model-selector" class="text-xs mr-1">Modelo:</label>
-                                <select id="model-selector" class="bg-gray-800 text-white text-xs rounded-md px-2 py-1 border border-gray-700">
-                                    <option value="llama" selected>Llama 3</option>
+                        <div class="flex items-center">
+                            <label for="model-selector" class="text-white text-sm mr-2">Modelo:</label>
+                            <div class="relative">
+                                <select id="model-selector" class="bg-[#150030] text-white border-2 border-purple-500/50 rounded-lg px-3 py-1.5 text-sm pr-8 focus:outline-none focus:ring-2 focus:ring-purple-600/70 focus:border-transparent transition-all duration-300 hover:border-purple-500 hover:shadow-purple-500/20 hover:shadow-lg cursor-pointer shadow-md shadow-purple-900/30 appearance-none">
                                     <option value="deepseek">DeepSeek</option>
+                                    <option value="llama" selected>Llama 3</option>
                                 </select>
-                                <div class="group relative cursor-pointer ml-1">
-                                    <span class="text-gray-400 text-xs hover:text-white">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
-                                        </svg>
-                                    </span>
-                                    <div class="tooltip-text opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity absolute -left-0 bottom-full mb-2 p-2 bg-gray-900 text-xs text-white rounded-md shadow-lg w-48 z-10">
-                                        Elige entre DeepSeek (modelo potente) y Llama 3 (alternativa experimental). El modelo por defecto es Llama 3, que ofrece excelentes respuestas para consultas generales.
-                                    </div>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <svg class="h-4 w-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                                 </div>
                             </div>
-                            <span class="text-blue-400 text-xs flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> Usando Llama 3
-                            </span>
+                            <div class="ml-2 tooltip relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400 hover:text-purple-300 cursor-pointer transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div class="tooltip-text hidden absolute right-0 mt-2 w-48 bg-[#150030] text-white text-xs p-3 rounded-md border border-purple-500/50 shadow-lg shadow-purple-900/30 z-10">
+                                    Elige entre dos modelos de IA: DeepSeek (modelo potente) o Llama 3 (modelo por defecto).
+                                </div>
+                            </div>
                         </div>
                     </div>
         
@@ -659,7 +705,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
                         <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/cont.png" alt="Proyecto 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="/static/img/cont.png" alt="Proyecto 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -696,7 +742,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
                         <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/port.png" alt="Proyecto 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="/static/img/port.png" alt="Proyecto 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -734,7 +780,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
                         <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/np.png" alt="Proyecto 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="/static/img/np.png" alt="Proyecto 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -1039,7 +1085,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
             }
         });
     </script>
-    <script src="script.js"></script>
+    <script src="/static/script.js"></script>
 
     <!-- Footer -->
     <footer class="w-full bg-gradient-to-t from-[#0c0018] to-[#0A0118] border-t border-purple-900/20 py-12">
@@ -1048,7 +1094,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <!-- Logo y descripción -->
                 <div class="w-full md:w-1/3 mb-8 md:mb-0">
                     <div class="flex items-center mb-4">
-                        <img src="logo-diego.png" alt="Logo Diego" class="w-10 h-10 rounded-full">
+                        <img src="/static/logo-diego.png" alt="Logo Diego" class="w-10 h-10 rounded-full">
                         <h3 class="text-white font-semibold ml-3 text-lg">Diego Zaldivar</h3>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed">
