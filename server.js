@@ -125,6 +125,21 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
+// Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
+app.get('/:file', (req, res, next) => {
+    const file = req.params.file;
+    // Si el archivo existe en la carpeta static, lo servimos
+    const filePath = path.join(__dirname, 'static', file);
+    try {
+        if (path.extname(file)) { // Si tiene extensión, probablemente es un archivo estático
+            return res.sendFile(filePath);
+        }
+    } catch (error) {
+        // Si hay un error, continuamos con la siguiente ruta
+    }
+    next();
+});
+
 // Función para manejar la solicitud a DeepSeek
 async function handleDeepSeekRequest(userMessage, controller) {
     const response = await openai.chat.completions.create({

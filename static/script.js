@@ -66,8 +66,11 @@ async function sendMessage(retryCount = 0) {
     const selectedModel = modelSelector.value;
     
     try {
+        // Obtener la URL base
+        const baseUrl = window.location.origin;
+        
         // Use a timeout promise to allow aborting long requests
-        const fetchPromise = fetch('/chat', {
+        const fetchPromise = fetch(`${baseUrl}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
