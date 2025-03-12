@@ -1,0 +1,152 @@
+# DOCUMENTACIÓN DEL PORTFOLIO DE DIEGO ZALDIVAR
+
+## DESCRIPCIÓN GENERAL
+
+Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desarrollador web de 18 años que reside en Barcelona y estudia en el instituto ITIC. La página web combina una presentación visual moderna con un chat interactivo alimentado por dos modelos de IA diferentes (Llama 3 y DeepSeek), permitiendo a los visitantes interactuar directamente con un asistente virtual que puede responder preguntas sobre la experiencia, habilidades y proyectos de Diego.
+
+## TECNOLOGÍAS UTILIZADAS
+
+### Frontend:
+- HTML5 y CSS3
+- JavaScript (vanilla)
+- TailwindCSS para estilos
+- Typed.js para efectos de texto
+- Diseño responsive adaptado a todos los dispositivos
+
+### Backend:
+- Node.js
+- Express.js (framework de servidor)
+- OpenAI API (para conexión con DeepSeek)
+- Llama API (para conexión con el modelo Llama 3)
+
+### Despliegue:
+- Vercel (hosting y despliegue)
+- Configuración personalizada usando vercel.json
+
+## ESTRUCTURA DEL PROYECTO
+
+### Archivos principales:
+- `server.js`: Servidor principal que maneja todas las peticiones y gestiona las APIs de IA
+- `static/index.html`: Página principal del portfolio
+- `static/script.js`: JavaScript para la funcionalidad del chat y la interfaz
+- `static/style.css`, `static/input.css`, `static/output.css`: Archivos CSS para estilos
+- `vercel.json`: Configuración para el despliegue en Vercel
+
+### Estructura de carpetas:
+- `/static`: Contiene todos los archivos estáticos del frontend
+  - `/static/img`: Imágenes de proyectos y elementos visuales
+- Raíz del proyecto: Archivos de configuración y servidor
+
+## FUNCIONALIDADES CLAVE
+
+### 1. Portfolio Personal
+- Secciones informativas: Presentación personal, habilidades, proyectos y contacto
+- Diseño atractivo con animaciones y transiciones
+- Navegación intuitiva a través de enlaces internos
+
+### 2. Chat Interactivo con IA
+- Integración con dos modelos de IA diferentes:
+  - Llama 3 (modelo principal): modelo de 8B parámetros de Anthropic
+  - DeepSeek (modelo alternativo): modelo de chat de DeepSeek
+- Selector para cambiar entre modelos de IA
+- Manejo de errores y reintentos automáticos
+- Visualización clara de estados de carga y mensajes
+
+### 3. Componentes UI Personalizados
+- Tooltip informativo para el selector de modelo
+- Efectos de escritura con Typed.js
+- Animaciones en scrolling y hover
+- Menú responsive para dispositivos móviles
+
+## IMPLEMENTACIÓN DEL CHAT
+
+### Arquitectura del Backend
+1. El servidor Express maneja todas las peticiones en `server.js`
+2. La ruta `/chat` recibe peticiones POST con:
+   - Un mensaje del usuario
+   - El modelo seleccionado ('llama' o 'deepseek')
+3. Según el modelo seleccionado, se redirige la petición a:
+   - `handleLlamaRequest()` - Para solicitudes al modelo Llama 3
+   - `handleDeepSeekRequest()` - Para solicitudes al modelo DeepSeek
+4. Cada función formatea la solicitud según los requisitos de la respectiva API
+
+### Integración de Modelos de IA
+1. **Modelo Llama 3**:
+   - Utiliza la biblioteca oficial `llamaai`
+   - Configurado para usar el modelo "llama3-8b"
+   - Las solicitudes incluyen un contexto personalizado sobre Diego
+   
+2. **Modelo DeepSeek**:
+   - Utiliza la biblioteca `openai` redirigida a la API de DeepSeek
+   - Configurado para usar el modelo "deepseek-chat"
+   - Comparte el mismo contexto que el modelo Llama
+
+### Manejo de Errores
+- Timeouts para solicitudes prolongadas (30 segundos)
+- Reintentos automáticos en caso de fallos (hasta 3 intentos)
+- Mensajes específicos según el tipo de error
+- Opción para cambiar de modelo si uno falla persistentemente
+
+## CONFIGURACIÓN Y DESPLIEGUE
+
+### Variables de Entorno
+- `OPENAI_API_KEY`: Clave API para DeepSeek
+- `LLAMA_API_KEY`: Clave API para Llama
+- `PORT`: Puerto para el servidor (por defecto 3000)
+
+### Configuración de Vercel
+- Redirección de todas las rutas al archivo `server.js`
+- Configuración de variables de entorno
+- Uso de @vercel/node para el despliegue de Node.js
+
+### Instrucciones de Despliegue
+1. Asegurarse de que todas las dependencias están instaladas:
+   - `node-fetch`
+   - `express`
+   - `openai`
+   - `llamaai`
+   - `axios` (dependencia de llamaai)
+   - `dotenv`
+2. Verificar que `vercel.json` esté correctamente configurado
+3. Ejecutar `vercel` o configurar despliegue automático desde GitHub
+
+## MANTENIMIENTO Y AMPLIACIÓN
+
+### Añadir Nuevos Proyectos
+Para añadir un nuevo proyecto:
+1. Crear imágenes en formato adecuado y añadirlas a `/static/img/`
+2. Añadir un nuevo bloque HTML siguiendo la estructura de los proyectos existentes en `index.html`
+3. Actualizar enlaces y descripciones
+
+### Actualizar Modelos de IA
+Para cambiar o actualizar los modelos:
+1. Modificar la configuración en las funciones `handleLlamaRequest` o `handleDeepSeekRequest` en `server.js`
+2. Actualizar los nombres de modelos y configuraciones según sea necesario
+3. Si se añade un nuevo modelo, actualizar la interfaz de usuario en `index.html` y la lógica en `script.js`
+
+### Optimización de Rendimiento
+- Las imágenes deben optimizarse antes de subirlas
+- El código CSS se puede optimizar mediante purgeCSS si es necesario
+- Minimizar las dependencias para mejorar los tiempos de carga
+
+## RESOLUCIÓN DE PROBLEMAS COMUNES
+
+### El chat no responde
+1. Verificar las claves API en el archivo `.env`
+2. Comprobar los registros del servidor (logs)
+3. Verificar la disponibilidad de las APIs externas
+4. Comprobar la configuración de rutas en `vercel.json`
+
+### Problemas con el despliegue
+1. Verificar que la estructura de archivos es correcta
+2. Comprobar la configuración en `vercel.json`
+3. Verificar que todas las dependencias están correctamente especificadas en `package.json`
+
+---
+
+## CONTACTO Y SOPORTE
+
+Para cualquier problema o mejora relacionada con este proyecto, contactar a:
+- Email: tovard799@gmail.com
+- Teléfono: +34 640 844 225
+- LinkedIn: https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/ 
