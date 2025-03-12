@@ -18,7 +18,7 @@ const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f
 // Inicialización de Express
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // Configuración del cliente OpenAI para DeepSeek
 const openai = new OpenAI({
@@ -125,21 +125,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
-// Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
-app.get('/:file', (req, res, next) => {
-    const file = req.params.file;
-    // Si el archivo existe en la carpeta static, lo servimos
-    const filePath = path.join(__dirname, 'static', file);
-    try {
-        if (path.extname(file)) { // Si tiene extensión, probablemente es un archivo estático
-            return res.sendFile(filePath);
-        }
-    } catch (error) {
-        // Si hay un error, continuamos con la siguiente ruta
-    }
-    next();
-});
-
 // Función para manejar la solicitud a DeepSeek
 async function handleDeepSeekRequest(userMessage, controller) {
     const response = await openai.chat.completions.create({
@@ -201,13 +186,11 @@ async function handleLlamaRequest(userMessage, controller) {
 // Endpoint del chat unificado
 app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
-    const model = req.body.model || 'llama'; // Cambio a 'llama' como valor por defecto
+    const model = req.body.model || 'deepseek'; // 'deepseek' o 'llama'
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
     }
-
-    console.log(`Recibida solicitud para el modelo: ${model} con mensaje: "${userMessage.substring(0, 50)}..."`);
 
     try {
         // Configuración del timeout
@@ -217,20 +200,20 @@ app.post('/chat', async (req, res) => {
         let botResponse;
 
         // Seleccionar el modelo a utilizar
-        console.log(`Procesando con modelo: ${model}`);
+        console.log(`Usando modelo: ${model}`);
         if (model === 'llama') {
             botResponse = await handleLlamaRequest(userMessage, controller);
         } else {
+            // Valor por defecto: DeepSeek
             botResponse = await handleDeepSeekRequest(userMessage, controller);
         }
 
         clearTimeout(timeoutId);
         
-        console.log(`Respuesta generada exitosamente para modelo ${model}`);
         return res.status(200).json({ response: botResponse });
 
     } catch (error) {
-        console.error(`Error en la API de ${model}:`, error);
+        console.error(`Error en la API de ${req.body.model || 'deepseek'}:`, error);
         
         // Manejo específico de errores
         if (error.name === 'AbortError') {
@@ -238,7 +221,7 @@ app.post('/chat', async (req, res) => {
         }
 
         let errorMessage = "Error al comunicarse con el chatbot.";
-        if (model === 'llama') {
+        if (req.body.model === 'llama') {
             errorMessage = "Error al comunicarse con el modelo Llama. Puede intentar con DeepSeek.";
         }
 
