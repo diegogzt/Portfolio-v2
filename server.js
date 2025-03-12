@@ -201,11 +201,13 @@ async function handleLlamaRequest(userMessage, controller) {
 // Endpoint del chat unificado
 app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
-    const model = req.body.model || 'deepseek'; // 'deepseek' o 'llama'
+    const model = req.body.model || 'llama'; // Cambio a 'llama' como valor por defecto
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
     }
+
+    console.log(`Recibida solicitud para el modelo: ${model} con mensaje: "${userMessage.substring(0, 50)}..."`);
 
     try {
         // Configuración del timeout
@@ -215,20 +217,20 @@ app.post('/chat', async (req, res) => {
         let botResponse;
 
         // Seleccionar el modelo a utilizar
-        console.log(`Usando modelo: ${model}`);
+        console.log(`Procesando con modelo: ${model}`);
         if (model === 'llama') {
             botResponse = await handleLlamaRequest(userMessage, controller);
         } else {
-            // Valor por defecto: DeepSeek
             botResponse = await handleDeepSeekRequest(userMessage, controller);
         }
 
         clearTimeout(timeoutId);
         
+        console.log(`Respuesta generada exitosamente para modelo ${model}`);
         return res.status(200).json({ response: botResponse });
 
     } catch (error) {
-        console.error(`Error en la API de ${req.body.model || 'deepseek'}:`, error);
+        console.error(`Error en la API de ${model}:`, error);
         
         // Manejo específico de errores
         if (error.name === 'AbortError') {
@@ -236,7 +238,7 @@ app.post('/chat', async (req, res) => {
         }
 
         let errorMessage = "Error al comunicarse con el chatbot.";
-        if (req.body.model === 'llama') {
+        if (model === 'llama') {
             errorMessage = "Error al comunicarse con el modelo Llama. Puede intentar con DeepSeek.";
         }
 
