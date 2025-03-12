@@ -18,7 +18,7 @@ const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f
 // Inicialización de Express
 const app = express();
 app.use(express.json());
-app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Configuración del cliente OpenAI para DeepSeek
 const openai = new OpenAI({
@@ -123,6 +123,21 @@ app.use((req, res, next) => {
 // Rutas
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+
+// Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
+app.get('/:file', (req, res, next) => {
+    const file = req.params.file;
+    // Si el archivo existe en la carpeta static, lo servimos
+    const filePath = path.join(__dirname, 'static', file);
+    try {
+        if (path.extname(file)) { // Si tiene extensión, probablemente es un archivo estático
+            return res.sendFile(filePath);
+        }
+    } catch (error) {
+        // Si hay un error, continuamos con la siguiente ruta
+    }
+    next();
 });
 
 // Función para manejar la solicitud a DeepSeek
