@@ -18,7 +18,7 @@ const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f
 // Inicialización de Express
 const app = express();
 app.use(express.json());
-app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Configuración del cliente OpenAI para DeepSeek
 const openai = new OpenAI({
