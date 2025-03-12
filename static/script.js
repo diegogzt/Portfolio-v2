@@ -43,9 +43,12 @@ function addLoadingMessage() {
 // Global variable to track if we're currently retrying
 let isRetrying = false;
 
+// Agregar una variable global para rastrear si es el primer intento
+let isFirstAttempt = true;
+
 async function sendMessage(retryCount = 0) {
     const message = userInput.value.trim();
-    if (!message) return;
+    if (!message && retryCount === 0) return; // Solo verificar si está vacío en el primer intento
 
     // Only add user message on first attempt, not on retries
     if (retryCount === 0) {
@@ -69,6 +72,8 @@ async function sendMessage(retryCount = 0) {
         // Obtener la URL base
         const baseUrl = window.location.origin;
         
+        console.log(`Enviando solicitud a ${baseUrl}/chat con modelo: ${selectedModel}`);
+        
         // Use a timeout promise to allow aborting long requests
         const fetchPromise = fetch(`${baseUrl}/chat`, {
             method: "POST",
@@ -81,21 +86,29 @@ async function sendMessage(retryCount = 0) {
 
         // Create a timeout promise
         const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Request timed out')), 25000);
+            setTimeout(() => reject(new Error('Request timed out')), 30000); // Aumentar a 30 segundos para dar más tiempo
         });
 
         // Race the fetch against the timeout
         const response = await Promise.race([fetchPromise, timeoutPromise]);
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json().catch(() => ({ error: `Error HTTP: ${response.status}` }));
+            throw new Error(errorData.error || `Error HTTP: ${response.status}`);
         }
 
         const data = await response.json();
-        chatBody.removeChild(loadingMessage);
+        
+        if (chatBody.contains(loadingMessage)) {
+            chatBody.removeChild(loadingMessage);
+        }
 
         if (data.response) {
             addMessage("bot", data.response);
+            // Si el primer intento tuvo éxito, marcar como completado
+            if (isFirstAttempt) {
+                isFirstAttempt = false;
+            }
         } else {
             addMessage("bot", "Lo siento, ocurrió un error en la respuesta.");
         }
@@ -104,8 +117,11 @@ async function sendMessage(retryCount = 0) {
         isRetrying = false;
 
     } catch (error) {
-        console.error("Error:", error);
-        chatBody.removeChild(loadingMessage);
+        console.error("Error al enviar mensaje:", error);
+        
+        if (chatBody.contains(loadingMessage)) {
+            chatBody.removeChild(loadingMessage);
+        }
 
         // Obtener el modelo actualmente seleccionado para mensajes específicos
         const modelSelector = document.getElementById('model-selector');
@@ -114,10 +130,12 @@ async function sendMessage(retryCount = 0) {
 
         // Implement retry logic
         if (retryCount < 2) {  // Try up to 2 additional times
+            console.log(`Reintentando envío de mensaje (${retryCount + 1}/3)`);
             addMessage("bot", `Estoy teniendo problemas para conectar con el servidor de ${modelName}. Intentando nuevamente... (${retryCount + 1}/3)`);
             setTimeout(() => sendMessage(retryCount + 1), 2000);  // Wait 2 seconds before retrying
         } else {
             // If all retries failed, show a fallback message
+            console.log("Todos los reintentos fallaron. Mostrando mensaje alternativo.");
             let fallbackResponse = `Lo siento, parece que estoy teniendo dificultades para conectarme al servidor de ${modelName} en este momento.`;
             
             if (selectedModel === 'llama') {
@@ -133,6 +151,10 @@ async function sendMessage(retryCount = 0) {
 
             addMessage("bot", fallbackResponse);
             isRetrying = false;
+            // Marcar el primer intento como completado incluso si falló
+            if (isFirstAttempt) {
+                isFirstAttempt = false;
+            }
         }
     }
 
@@ -157,16 +179,24 @@ userInput.addEventListener("keydown", function (event) {
 document.addEventListener('DOMContentLoaded', function() {
     areaAuto();
     
-    // Añadir mensaje inicial del bot
-    const initialMessage = "¡Hola! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. ¿En qué puedo ayudarte hoy?";
-    addMessage("bot", initialMessage);
-    
-    // Configurar el evento de cambio del selector de modelo
+    // Configurar el selector de modelo y asegurarse de que Llama esté seleccionado
     const modelSelector = document.getElementById('model-selector');
-    modelSelector.addEventListener('change', updateModelStatus);
+    if (modelSelector) {
+        // Establecer Llama como valor por defecto si no está ya seleccionado
+        if (modelSelector.value !== 'llama') {
+            modelSelector.value = 'llama';
+        }
+        
+        // Configurar el evento de cambio
+        modelSelector.addEventListener('change', updateModelStatus);
+        
+        // Actualizar el estado inicial
+        updateModelStatus();
+    }
     
-    // Establecer el estado inicial
-    updateModelStatus();
+    // Añadir mensaje inicial del bot (Llama 3 por defecto)
+    const initialMessage = "¡Hola! Soy el asistente virtual de Diego usando el modelo Llama 3. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo. ¿En qué puedo ayudarte hoy?";
+    addMessage("bot", initialMessage);
     
     // Configurar el tooltip
     setupTooltip();
@@ -176,8 +206,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateModelStatus() {
     const modelSelector = document.getElementById('model-selector');
     const selectedModel = modelSelector.value;
-    const statusText = document.querySelector('.text-green-400');
-    const previousModel = statusText.getAttribute('data-current-model') || 'deepseek';
+    const statusText = document.querySelector('.text-green-400') || document.querySelector('.text-blue-400');
+    
+    if (!statusText) return; // Salir si no se encuentra el elemento
+    
+    const previousModel = statusText.getAttribute('data-current-model') || 'llama'; // Cambiar el valor por defecto a 'llama'
     
     // Actualizar el indicador visual
     if (selectedModel === 'llama') {
