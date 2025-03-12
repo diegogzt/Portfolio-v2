@@ -5,7 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "start:deepseek": "node server.js",
+    "start:llama": "node server-llama.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +21,7 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.0.6",
     "@tailwindcss/postcss": "^4.0.9",
+    "axios": "^1.8.3",
     "browserslist": "^4.24.4",
     "caniuse-lite": "^1.0.30001700",
     "dotenv": "^16.4.7",
@@ -26,7 +30,9 @@
     "express": "^4.21.2",
     "fraction.js": "^4.3.7",
     "gsap": "^3.12.7",
+    "llamaai": "^1.0.4",
     "nanoid": "^3.3.8",
+    "node-fetch": "^3.3.2",
     "node-releases": "^2.0.19",
     "normalize-range": "^0.1.2",
     "opena": "^0.1.19",

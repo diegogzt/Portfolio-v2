@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import LlamaAI from 'llamaai';
 
 // Configuración inicial
 const __filename = fileURLToPath(import.meta.url);
@@ -11,18 +12,22 @@ dotenv.config();
 
 // Variables de entorno y configuración
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.OPENAI_API_KEY || 'sk-eb84e6b408164943bae95df877b0685b';
+const DEEPSEEK_API_KEY = process.env.OPENAI_API_KEY || 'sk-eb84e6b408164943bae95df877b0685b';
+const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f54b3f4fd';
 
 // Inicialización de Express
 const app = express();
 app.use(express.json());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-// Configuración del cliente OpenAI
+// Configuración del cliente OpenAI para DeepSeek
 const openai = new OpenAI({
     baseURL: 'https://api.deepseek.com',
-    apiKey: API_KEY
+    apiKey: DEEPSEEK_API_KEY
 });
+
+// Configuración del cliente Llama
+const llamaAPI = new LlamaAI(LLAMA_API_KEY);
 
 // Contexto del chatbot
 const CUSTOM_CONTEXT = `
@@ -120,9 +125,68 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
-// Endpoint del chat
+// Función para manejar la solicitud a DeepSeek
+async function handleDeepSeekRequest(userMessage, controller) {
+    const response = await openai.chat.completions.create({
+        model: "deepseek-chat",
+        messages: [
+            { role: "system", content: CUSTOM_CONTEXT },
+            { role: "user", content: userMessage },
+        ],
+        stream: false,
+        max_tokens: 500,
+        temperature: 0.7
+    }, {
+        signal: controller.signal
+    });
+
+    return response.choices[0].message.content;
+}
+
+// Función para manejar la solicitud a Llama
+async function handleLlamaRequest(userMessage, controller) {
+    // Configurar la solicitud según la documentación de Llama
+    const apiRequestJson = {
+        model: "llama3-8b",
+        messages: [
+            { role: "system", content: CUSTOM_CONTEXT },
+            { role: "user", content: userMessage }
+        ],
+        stream: false,
+        temperature: 0.7,
+        max_tokens: 500
+    };
+
+    // Utilizamos un AbortController para manejar el timeout
+    const abortController = new AbortController();
+    const timeout = setTimeout(() => abortController.abort(), 30000);
+
+    try {
+        const response = await llamaAPI.run(apiRequestJson, {
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeout);
+        console.log('Respuesta de Llama API:', JSON.stringify(response, null, 2));
+        
+        // Procesar la respuesta según el formato de Llama
+        if (response.choices && response.choices.length > 0 && response.choices[0].message) {
+            return response.choices[0].message.content;
+        } else if (response.content) {
+            return response.content;
+        } else {
+            return JSON.stringify(response);
+        }
+    } catch (error) {
+        clearTimeout(timeout);
+        throw error;
+    }
+}
+
+// Endpoint del chat unificado
 app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
+    const model = req.body.model || 'deepseek'; // 'deepseek' o 'llama'
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
@@ -133,42 +197,36 @@ app.post('/chat', async (req, res) => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos
 
-        // Petición a la API
-        const response = await openai.chat.completions.create({
-            model: "deepseek-chat",
-            messages: [
-                { role: "system", content: CUSTOM_CONTEXT },
-                { role: "user", content: userMessage },
-            ],
-            stream: false,
-            max_tokens: 500,
-            temperature: 0.7
-        }, {
-            signal: controller.signal
-        });
+        let botResponse;
+
+        // Seleccionar el modelo a utilizar
+        console.log(`Usando modelo: ${model}`);
+        if (model === 'llama') {
+            botResponse = await handleLlamaRequest(userMessage, controller);
+        } else {
+            // Valor por defecto: DeepSeek
+            botResponse = await handleDeepSeekRequest(userMessage, controller);
+        }
 
         clearTimeout(timeoutId);
         
-        const botResponse = response.choices[0].message.content;
         return res.status(200).json({ response: botResponse });
 
     } catch (error) {
-        console.error("Error en la API:", error);
+        console.error(`Error en la API de ${req.body.model || 'deepseek'}:`, error);
         
         // Manejo específico de errores
         if (error.name === 'AbortError') {
             return res.status(504).json({ error: "La solicitud tomó demasiado tiempo en responder." });
         }
 
-        if (error.response) {
-            return res.status(error.response.status || 500).json({
-                error: `Error de la API: ${error.response.statusText || 'Error desconocido'}`,
-                details: error.message
-            });
+        let errorMessage = "Error al comunicarse con el chatbot.";
+        if (req.body.model === 'llama') {
+            errorMessage = "Error al comunicarse con el modelo Llama. Puede intentar con DeepSeek.";
         }
 
         return res.status(500).json({
-            error: "Error al comunicarse con el chatbot.",
+            error: errorMessage,
             details: error.message
         });
     }
@@ -176,5 +234,6 @@ app.post('/chat', async (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`Servidor unificado ejecutándose en http://localhost:${PORT}`);
+    console.log('Soporta modelos: DeepSeek y Llama');
 });

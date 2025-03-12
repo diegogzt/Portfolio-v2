@@ -61,12 +61,19 @@ async function sendMessage(retryCount = 0) {
     // Set a local retry flag
     isRetrying = retryCount > 0;
 
+    // Obtener el modelo seleccionado
+    const modelSelector = document.getElementById('model-selector');
+    const selectedModel = modelSelector.value;
+    
     try {
         // Use a timeout promise to allow aborting long requests
-        const fetchPromise = fetch('/api/chat', {
+        const fetchPromise = fetch('/chat', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ 
+                message,
+                model: selectedModel  // Enviar el modelo seleccionado
+            })
         });
 
         // Create a timeout promise
@@ -97,22 +104,29 @@ async function sendMessage(retryCount = 0) {
         console.error("Error:", error);
         chatBody.removeChild(loadingMessage);
 
+        // Obtener el modelo actualmente seleccionado para mensajes específicos
+        const modelSelector = document.getElementById('model-selector');
+        const selectedModel = modelSelector.value;
+        const modelName = selectedModel === 'llama' ? 'Llama 3' : 'DeepSeek';
+
         // Implement retry logic
         if (retryCount < 2) {  // Try up to 2 additional times
-            addMessage("bot", `Estoy teniendo problemas para conectar. Intentando nuevamente... (${retryCount + 1}/3)`);
+            addMessage("bot", `Estoy teniendo problemas para conectar con el servidor de ${modelName}. Intentando nuevamente... (${retryCount + 1}/3)`);
             setTimeout(() => sendMessage(retryCount + 1), 2000);  // Wait 2 seconds before retrying
         } else {
             // If all retries failed, show a fallback message
-            const fallbackResponse = `Lo siento, parece que estoy teniendo dificultades para conectarme al servidor en este momento. 
-
-Mientras tanto, puedo decirte que soy un chatbot creado por Diego, un desarrollador web de 18 años de Barcelona. 
-
-Si deseas contactar con Diego directamente:
+            let fallbackResponse = `Lo siento, parece que estoy teniendo dificultades para conectarme al servidor de ${modelName} en este momento.`;
+            
+            if (selectedModel === 'llama') {
+                fallbackResponse += `\n\nPuedes probar a cambiar al modelo DeepSeek desde el selector en la parte superior del chat. Es posible que el servidor de Llama 3 no esté activo en este momento.`;
+            } else {
+                fallbackResponse += `\n\nPuedes probar a cambiar al modelo Llama 3 desde el selector en la parte superior del chat. Es posible que el servidor principal no esté activo en este momento.`;
+            }
+            
+            fallbackResponse += `\n\nPuedes contactar con Diego directamente:
 - Email: tovard799@gmail.com
 - Teléfono: +34 640 844 225
-- LinkedIn: https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/
-
-¿Puedo ayudarte con algo más mientras resolvemos los problemas técnicos?`;
+- LinkedIn: https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/`;
 
             addMessage("bot", fallbackResponse);
             isRetrying = false;
@@ -143,4 +157,56 @@ document.addEventListener('DOMContentLoaded', function() {
     // Añadir mensaje inicial del bot
     const initialMessage = "¡Hola! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. ¿En qué puedo ayudarte hoy?";
     addMessage("bot", initialMessage);
+    
+    // Configurar el evento de cambio del selector de modelo
+    const modelSelector = document.getElementById('model-selector');
+    modelSelector.addEventListener('change', updateModelStatus);
+    
+    // Establecer el estado inicial
+    updateModelStatus();
+    
+    // Configurar el tooltip
+    setupTooltip();
 });
+
+// Función para actualizar el estado del modelo en la interfaz
+function updateModelStatus() {
+    const modelSelector = document.getElementById('model-selector');
+    const selectedModel = modelSelector.value;
+    const statusText = document.querySelector('.text-green-400');
+    const previousModel = statusText.getAttribute('data-current-model') || 'deepseek';
+    
+    // Actualizar el indicador visual
+    if (selectedModel === 'llama') {
+        statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> Usando Llama 3';
+        statusText.className = 'text-blue-400 text-xs flex items-center gap-1';
+    } else {
+        statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span> Usando DeepSeek';
+        statusText.className = 'text-green-400 text-xs flex items-center gap-1';
+    }
+    
+    // Guardar el modelo actual
+    statusText.setAttribute('data-current-model', selectedModel);
+    
+    // Si el modelo ha cambiado, añadir un mensaje del sistema
+    if (previousModel !== selectedModel && previousModel) {
+        const modelName = selectedModel === 'llama' ? 'Llama 3' : 'DeepSeek';
+        addMessage("bot", `Has cambiado al modelo ${modelName}. ¿En qué puedo ayudarte?`);
+    }
+}
+
+// Función para configurar el comportamiento del tooltip
+function setupTooltip() {
+    const tooltipContainer = document.querySelector('.tooltip');
+    const tooltipText = document.querySelector('.tooltip-text');
+    
+    if (tooltipContainer && tooltipText) {
+        tooltipContainer.addEventListener('mouseenter', () => {
+            tooltipText.classList.remove('hidden');
+        });
+        
+        tooltipContainer.addEventListener('mouseleave', () => {
+            tooltipText.classList.add('hidden');
+        });
+    }
+}
