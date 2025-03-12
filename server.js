@@ -1,35 +1,31 @@
 import express from 'express';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
-import path from 'path'; // Importa el módulo 'path' de Node.js
-import { fileURLToPath } from 'url'; // <-- ¡NUEVA IMPORTACIÓN!
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// **DEFINE __dirname HERE, IMMEDIATELY AFTER IMPORTS:**
+// Configuración inicial
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 dotenv.config();
 
+// Variables de entorno y configuración
+const PORT = process.env.PORT || 3000;
+const API_KEY = process.env.OPENAI_API_KEY || 'sk-eb84e6b408164943bae95df877b0685b';
+
+// Inicialización de Express
 const app = express();
-const port = 5000;
-
 app.use(express.json());
-
-// **NOW you can use __dirname here, AFTER it's been defined:**
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-
-// Configuración de la API de DeepSeek
-const apiKeyDeepSeek = process.env.OPENAI_API_KEY; // Use fallback directly for testing
+// Configuración del cliente OpenAI
 const openai = new OpenAI({
     baseURL: 'https://api.deepseek.com',
-    apiKey: 'sk-eb84e6b408164943bae95df877b0685b',
+    apiKey: API_KEY
 });
 
-
-
-// Contexto personalizado (igual que en Python)
-const customContext = `
+// Contexto del chatbot
+const CUSTOM_CONTEXT = `
 Contexto del Chatbot:
 
 ¡Hola! Soy un chatbot creado por Diego, un apasionado desarrollador web de 18 años que reside en la vibrante ciudad de Barcelona, en el barrio 22@, y que actualmente se encuentra formándose en el instituto ITIC. Diego es un entusiasta del mundo de la tecnología y el desarrollo, con un abanico de habilidades que abarcan desde el diseño frontend hasta la inteligencia artificial.
@@ -96,39 +92,89 @@ Puedes contactarlo a través de su correo electrónico profesional: [tovard799@g
 Puedes contactarlo a traves de su telefono:[+34 640 844 225]
 Puedes enviarle un mensaje a través de LinkedIn: [https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/].
 Si tu interés está relacionado con alguno de sus proyectos o habilidades específicas, puedo transmitirte la información necesaria para que puedas contactarlo de la forma más adecuada.
-`; // **¡PEGA AQUÍ TU CONTEXTO COMPLETO!**
+`;
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'index.html')); // Ruta a index.html DENTRO de static - ¡MODIFICADO!
+// Configuración de CORS para todas las rutas
+const setCorsHeaders = (res) => {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+    return res;
+};
+
+// Middleware global para CORS
+app.use((req, res, next) => {
+    setCorsHeaders(res);
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    next();
 });
-// Ruta /chat (similar a tu ruta en Flask)
+
+// Rutas
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+
+// Endpoint del chat
 app.post('/chat', async (req, res) => {
-    const userMessage = req.body.message; // Obtener el mensaje del usuario desde el cuerpo de la petición
+    const userMessage = req.body.message;
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
     }
 
     try {
+        // Configuración del timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos
+
+        // Petición a la API
         const response = await openai.chat.completions.create({
             model: "deepseek-chat",
             messages: [
-                { role: "system", content: customContext },
+                { role: "system", content: CUSTOM_CONTEXT },
                 { role: "user", content: userMessage },
             ],
             stream: false,
+            max_tokens: 500,
+            temperature: 0.7
+        }, {
+            signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
+        
         const botResponse = response.choices[0].message.content;
-        res.json({ response: botResponse }); // Enviar la respuesta del bot como JSON
+        return res.status(200).json({ response: botResponse });
 
     } catch (error) {
-        console.error("Error al llamar a la API de DeepSeek:", error);
-        res.status(500).json({ error: "Error al comunicarse con el chatbot." }); // Enviar error al cliente
+        console.error("Error en la API:", error);
+        
+        // Manejo específico de errores
+        if (error.name === 'AbortError') {
+            return res.status(504).json({ error: "La solicitud tomó demasiado tiempo en responder." });
+        }
+
+        if (error.response) {
+            return res.status(error.response.status || 500).json({
+                error: `Error de la API: ${error.response.statusText || 'Error desconocido'}`,
+                details: error.message
+            });
+        }
+
+        return res.status(500).json({
+            error: "Error al comunicarse con el chatbot.",
+            details: error.message
+        });
     }
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-    console.log(`Servidor Node.js escuchando en http://localhost:${port}`);
+// Iniciar servidor
+app.listen(PORT, () => {
+    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
 });
