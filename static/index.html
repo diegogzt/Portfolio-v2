@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEVELOPER DIEGO</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- CSS Files -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="input.css">
-    <link rel="stylesheet" href="output.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Typed.js -->
     <script>
         tailwind.config = {
@@ -315,7 +315,7 @@
     </style>
 </head>
 
-<body class=" bg-[#0A0118]  dynamic-bg overflow-x-hidden">
+<body class=" bg-[#0A0118]  dynamic-bg overflow-x-hidden ">
     <!-- Header -->
     <div class="relative w-full">
         <header
@@ -369,7 +369,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
             <p id="typed-text" class="text-xl md:text-2xl w-[60%] md:w-xl text-center mt-3 text-fuchsia-50 animate3"></p>
             
             <!-- Flecha animada para scroll hacia la sección de chat -->
-            <a href="#chat-section" class="mt-4 animate-bounce animate-5 flex flex-col items-center gap-2 group transition-all duration-300 hover:transform hover:translate-y-2">
+            <a href="#chat-section" class="mt-4 animate-5 flex flex-col items-center gap-2 group transition-all duration-300 hover:transform hover:translate-y-2">
                 <span class="text-gray-400 text-sm group-hover:text-purple-400 transition-colors">Vamos a conversar</span>
                 <div class="w-12 h-12 rounded-full border border-purple-600/30 flex items-center justify-center bg-gradient-to-br from-[#0c0018]/70 to-[#0c0018]/30 group-hover:shadow-md group-hover:shadow-purple-900/30 backdrop-blur-sm transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -408,26 +408,10 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                         </div>
                         <div>
                             <h3 class="text-white font-medium">Asistente de Diego</h3>
-                            <p class="text-blue-400 text-xs flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
-                                Usando Llama 3
+                            <p class="text-green-400 text-xs flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+                                Conectado
                             </p>
-                        </div>
-                        <!-- Selector de modelo -->
-                        <div class="ml-auto flex items-center">
-                            <label for="model-selector" class="text-white text-sm mr-2">Modelo:</label>
-                            <select id="model-selector" class="bg-[#0d0020] text-white border border-purple-500/30 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-purple-500/70 transition-all duration-300 hover:border-purple-500/50 cursor-pointer">
-                                <option value="llama">Llama 3</option>
-                                <option value="deepseek">DeepSeek</option>
-                            </select>
-                            <div class="ml-2 tooltip relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-400 hover:text-purple-300 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <div class="tooltip-text hidden absolute right-0 mt-2 w-48 bg-[#0d0020] text-white text-xs p-2 rounded-md border border-purple-500/30 shadow-lg z-10">
-                                    Elige entre dos modelos de IA: Llama 3 (modelo por defecto) o DeepSeek (alternativa).
-                                </div>
-                            </div>
                         </div>
                     </div>
         
@@ -438,6 +422,14 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                     </div>
         
                     <!-- Pie del chat -->
+                    <div class="flex flex-col gap-2 mx-4 mb-2">
+                        <div class="flex justify-end">
+                            <select id="model-selector" class="bg-[#0d0020] text-white text-sm rounded-lg px-3 py-1 border border-purple-900/20 focus:border-purple-500/50 focus:outline-none">
+                                <option value="llama">Llama 3</option>
+                                <option value="deepseek">DeepSeek</option>
+                            </select>
+                        </div>
+                    </div>
                     <div
                         class="chat-footer bg-[#0d0020]/80 flex justify-between items-center p-4 mx-4 mb-8 rounded-xl border border-purple-900/20 transition-all duration-300 focus-within:border-purple-500/50 focus-within:shadow-purple-900/30 focus-within:shadow-lg">
                         <textarea class="myInput text-white w-full h-auto max-h-72 resize-none" id="user-input"
@@ -650,9 +642,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <!-- Proyecto 1 -->
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
-                        <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/cont.png" alt="Proyecto 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        </div>
+                        <img src="img/cont.png" alt="Proyecto 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6 flex-grow">
@@ -668,7 +658,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                     </div>
                     <div class="p-6 pt-0 mt-auto">
                         <div class="flex gap-3">
-                            <a href="#" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
+                            <a href="/proyecto-1" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
@@ -687,9 +677,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <!-- Proyecto 2 -->
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
-                        <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/port.png" alt="Proyecto 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        </div>
+                        <img src="img/port.png" alt="Proyecto 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6 flex-grow">
@@ -706,7 +694,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                     </div>
                     <div class="p-6 pt-0 mt-auto">
                         <div class="flex gap-3">
-                            <a href="#" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
+                            <a href="/proyecto-2" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
@@ -725,9 +713,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                 <!-- Proyecto 3 -->
                 <div class="group bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/20 flex flex-col h-full">
                     <div class="relative overflow-hidden h-48">
-                        <div class="project-image overflow-hidden rounded-lg">
-                            <img src="img/np.png" alt="Proyecto 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        </div>
+                        <img src="img/np.png" alt="Proyecto 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0e0021] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6 flex-grow">
@@ -745,7 +731,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                     </div>
                     <div class="p-6 pt-0 mt-auto">
                         <div class="flex gap-3">
-                            <a href="#" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
+                            <a href="/proyecto-3" class="text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>

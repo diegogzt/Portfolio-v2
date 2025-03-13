@@ -18,6 +18,11 @@ const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f
 // Inicialización de Express
 const app = express();
 app.use(express.json());
+
+// Servir archivos estáticos con ambas rutas
+// Ruta con '/static' para compatibilidad con Vercel
+app.use('/static', express.static(path.join(__dirname, 'static')));
+// Ruta sin prefijo para desarrollo local
 app.use(express.static(path.join(__dirname, 'static')));
 
 // Configuración del cliente OpenAI para DeepSeek
@@ -123,6 +128,11 @@ app.use((req, res, next) => {
 // Rutas
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+
+// Ruta dinámica para páginas de proyectos
+app.get('/proyecto-:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'proyecto.html'));
 });
 
 // Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
