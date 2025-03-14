@@ -102,6 +102,7 @@ Puedes contactarlo a través de su correo electrónico profesional: [tovard799@g
 Puedes contactarlo a traves de su telefono:[+34 640 844 225]
 Puedes enviarle un mensaje a través de LinkedIn: [https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/].
 Si tu interés está relacionado con alguno de sus proyectos o habilidades específicas, puedo transmitirte la información necesaria para que puedas contactarlo de la forma más adecuada.
+TIENES QUE SER CLARO Y CONSISO, NO PUEDES ENVIAR MENSAJES LARGOS, SIEMPRE INTENTA MAXIMO 1 PARRAFO
 `;
 
 // Configuración de CORS para todas las rutas
