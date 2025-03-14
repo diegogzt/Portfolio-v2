@@ -33,7 +33,7 @@
             title: 'Portfolio Personal',
             category: 'Aplicación Web',
             date: 'Marzo 2025',
-            description: 'Una aplicación de chat en tiempo real con interfaces de usuario modernas y funciones avanzadas como mensajes en tiempo real, notificaciones y almacenamiento de mensajes.',
+            description: 'Un portfolio personal con un chatbot con API de llama y deepseek para que la empresa este dispuesta a contratarme.',
             technologies: ['Node.js', 'Javascript', 'Tailwind', 'CSS', 'HTML', 'Vercel', 'Cloudflare'],
             features: [
                 'Chat en tiempo real con IA',
