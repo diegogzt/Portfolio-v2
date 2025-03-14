@@ -11,6 +11,13 @@ const chatBody = document.getElementById("chat-body");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("button");
 
+// Mensaje de bienvenida al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        addMessage("bot", "👋 ¡Hola! Soy el asistente virtual de Diego. Estoy aquí para ayudarte con cualquier pregunta sobre sus proyectos, habilidades o experiencia. ¿En qué puedo ayudarte hoy?");
+    }, 500);
+});
+
 function addMessage(role, message) {
     areaAuto();
     const div = document.createElement("div");

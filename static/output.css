@@ -95,6 +95,12 @@
 .w-screen {
   width: 100vw;
 }
+.max-w-none {
+  max-width: none;
+}
+.min-w-fit {
+  min-width: fit-content;
+}
 .flex-1 {
   flex: 1;
 }
@@ -123,6 +129,9 @@
 }
 .resize-none {
   resize: none;
+}
+.list-disc {
+  list-style-type: disc;
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -156,6 +165,9 @@
 }
 .overflow-hidden {
   overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
 }
 .overflow-x-hidden {
   overflow-x: hidden;
@@ -196,11 +208,17 @@
 .bg-\[\#0e0021\]\/60 {
   background-color: color-mix(in oklab, #0e0021 60%, transparent);
 }
+.bg-\[\#08000e\] {
+  background-color: #08000e;
+}
 .bg-\[\#14002a\] {
   background-color: #14002a;
 }
 .bg-\[\#14002a\]\/50 {
   background-color: color-mix(in oklab, #14002a 50%, transparent);
+}
+.bg-\[\#080010\] {
+  background-color: #080010;
 }
 .bg-gradient-to-br {
   --tw-gradient-position: to bottom right in oklab;
@@ -251,6 +269,9 @@
 }
 .object-cover {
   object-fit: cover;
+}
+.pt-\[9dvh\] {
+  padding-top: 9dvh;
 }
 .pt-\[12dvh\] {
   padding-top: 12dvh;
