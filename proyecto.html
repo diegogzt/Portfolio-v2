@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Proyecto | Portfolio Diego Zaldivar</title>
+    <link href="static/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <style>
+        /* Estilos adicionales específicos para la página de proyecto */
+        body {
+            background-color: #0A0118;
+            color: #f8f8f8;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .project-header {
+            position: relative;
+            overflow: hidden;
+            height: 60vh;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.3);
+            transition: all 0.5s ease;
+            height: 300px;
+            cursor: pointer;
+            flex: 0 0 90vw;
+            max-width: 500px;
+            margin-left: 20px;
+        }
+        
+        .gallery-item:first-child {
+            margin-left: calc(50vw - 50% + 20px);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(124, 58, 237, 0.4);
+        }
+        
+        .gallery-item img {
+            transition: transform 0.8s ease;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 1, 24, 0.9), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .tech-tag {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tech-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px -3px rgba(124, 58, 237, 0.5);
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 12px;
+            padding: 5px;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(45deg, #7c3aed, #4f46e5, #7c3aed);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+        }
+        
+        /* Animaciones */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        /* Estilo para el cursor personalizado */
+        * {
+            cursor: url('static/cursor.svg'), auto !important;
+        }
+        
+        /* Estilos para los enlaces y botones */
+        a, button, [role="button"] {
+            cursor: url('static/cursor.svg'), pointer !important;
+            transition: transform 0.2s ease, color 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 0.75rem 1rem;
+            color: #f8f8f8;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #7c3aed, #4f46e5);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #a78bfa;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Estilos para scroll personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0A0118;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #7c3aed, #4f46e5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #6d28d9, #4338ca);
+        }
+        
+        .project-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .project-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, #0A0118, transparent);
+        }
+        
+        .project-content {
+            position: relative;
+            margin-top: -5rem;
+            z-index: 10;
+        }
+        
+        .tech-tag {
+            background-color: #14002a;
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-tag:hover {
+            background-color: rgba(124, 58, 237, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .feature-item {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.75rem;
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(to right, #7c3aed, #4f46e5);
+            border-radius: 50%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #7c3aed, #4f46e5);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 0.75rem 1rem;
+            color: #f8f8f8;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #7c3aed, #4f46e5);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #a78bfa;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-[#0A0118] text-white min-h-screen flex flex-col">
+    <header class="fixed z-10 w-full h-[9dvh] backdrop-blur-sm border-b border-purple-500/30 flex justify-between px-0 md:px-8 lg:px-16 items-center transition-transform duration-300 shadow-md shadow-purple-900/10">
+        <div class="flex items-center min-w-0 flex-shrink-0 ml-4 lg:ml-0">
+            <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
+                <img src="static/logo-diego.png" alt="emoji-programer" class="w-[2.5em] sm:w-[2.8em] md:w-[3.2em] lg:w-[4em] flex-shrink-0">
+                <h1 class="text-stone-50 ml-2 sm:ml-2 md:ml-3 text-sm sm:text-base md:text-lg lg:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">Diego Zaldivar</h1>
+            </a>
+        </div>
+        <div class="hidden md:flex space-x-2 lg:space-x-4 mr-2 lg:mr-0">
+            <a href="/#chat-section" class="nav-link">Chat</a>
+            <a href="/#skills-section" class="nav-link">Habilidades</a>
+            <a href="/#proyectos-section" class="nav-link">Proyectos</a>
+            <a href="/#contacto" class="nav-link">Contacto</a>
+        </div>
+        <button id="mobile-menu-button" class="md:hidden text-white p-2 flex-shrink-0 mr-2 lg:mr-0" aria-label="Menú de navegación">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu"
+        class="fixed top-[12dvh] left-0 w-full border border-purple-600/30 rounded-b-lg p-4 z-20 opacity-0 -translate-y-8 pointer-events-none transform transition-all duration-300 ease-in-out bg-[#0A0118]/80 backdrop-blur-md shadow-lg shadow-purple-900/20">
+        <div class="flex flex-col space-y-3">
+            <a href="/#chat-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Chat</a>
+            <a href="/#skills-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Habilidades</a>
+            <a href="/#proyectos-section" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Proyectos</a>
+            <a href="/#contacto" class="text-stone-50 mobile-nav-link transition duration-300 p-3 rounded-lg">Contacto</a>
+        </div>
+    </div>
+
+    <main class="pt-[9dvh] flex-grow">
+        <!-- Cabecera del proyecto -->
+        <div id="project-header" class="project-header">
+            <img id="project-image" src="" alt="Imagen del proyecto">
+        </div>
+        
+        <div class="container mx-auto px-6">
+            <div class="project-content bg-[#0e0021]/60 rounded-xl overflow-hidden border border-purple-900/20 backdrop-blur-sm shadow-lg shadow-purple-900/20 p-8 mb-16">
+                <h1 id="project-title" class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300 mb-4">Cargando proyecto...</h1>
+                
+                <div class="flex items-center mb-8">
+                    <span id="project-category" class="bg-[#14002a] text-purple-400 px-3 py-1 rounded-full text-sm border border-purple-900/30">Categoría</span>
+                    <span class="mx-3 text-gray-500">•</span>
+                    <span id="project-date" class="text-gray-400">Fecha</span>
+                </div>
+                
+                <div class="prose prose-lg prose-invert max-w-none">
+                    <p id="project-description" class="text-gray-300 mb-8 text-lg">Cargando descripción...</p>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300">Tecnologías Utilizadas</h2>
+                    <div id="project-technologies" class="flex flex-wrap gap-3 mb-10">
+                        <!-- Las tecnologías se cargarán dinámicamente -->
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300">Características Principales</h2>
+                    <ul id="project-features" class="space-y-4 mb-10">
+                        <!-- Las características se cargarán dinámicamente -->
+                    </ul>
+                </div>
+                
+                <div class="flex flex-wrap gap-4 mt-12">
+                    <a id="project-demo" href="#" target="_blank" class="btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        Ver Demo
+                    </a>
+                    <a id="project-github" href="#" target="_blank" class="btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Ver Código
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#0e0021] border-t border-purple-900/20 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">&copy; 2025 Diego Zaldivar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Obtener el ID del proyecto de la URL
+        // La URL es algo como /proyecto-1, /proyecto-2, etc.
+        const projectId = window.location.pathname.split('-').pop();
+        
+        // Función para cargar los datos del proyecto
+        async function loadProject() {
+            try {
+                // En una aplicación real, aquí harías una petición a tu API
+                // Por ahora, vamos a usar datos estáticos basados en el ID
+                const projects = [
+                    {
+                        id: "1",
+                        title: "Sistema de Gestión de Inventario",
+                        image: "https://placehold.co/1200x600/2563eb/FFFFFF/png?text=Inventory+System",
+                        category: "Aplicación Web",
+                        date: "Marzo 2025",
+                        description: "Un sistema completo de gestión de inventario desarrollado con React y Node.js. Permite a los usuarios realizar un seguimiento de los productos, gestionar el stock, generar informes y optimizar la cadena de suministro. La interfaz moderna y responsive facilita el acceso tanto desde escritorio como desde dispositivos móviles, asegurando que los administradores puedan gestionar su inventario desde cualquier lugar.",
+                        technologies: ["React", "Node.js", "MongoDB", "Express", "Redux", "Tailwind CSS"],
+                        features: [
+                            "Panel de control en tiempo real con métricas clave y visualización de datos",
+                            "Seguimiento de inventario con códigos QR y sistema de escaneo integrado",
+                            "Informes avanzados con gráficos interactivos y exportación en múltiples formatos",
+                            "Gestión de proveedores integrada con historial de pedidos y rendimiento",
+                            "Notificaciones automáticas de stock bajo y sugerencias de reabastecimiento"
+                        ],
+                        demoUrl: "https://demo-inventario.vercel.app",
+                        githubUrl: "https://github.com/username/inventory-system"
+                    },
+                    {
+                        id: "2",
+                        title: "Aplicación de Finanzas Personales",
+                        image: "https://placehold.co/1200x600/059669/FFFFFF/png?text=Finance+App",
+                        category: "Aplicación Móvil",
+                        date: "Enero 2025",
+                        description: "Una aplicación moderna de finanzas personales que ayuda a los usuarios a realizar un seguimiento de sus gastos, establecer presupuestos y alcanzar sus objetivos financieros con visualizaciones interactivas y consejos personalizados. La aplicación utiliza aprendizaje automático para categorizar automáticamente las transacciones y ofrecer insights relevantes sobre los hábitos de gasto.",
+                        technologies: ["React Native", "Firebase", "Redux", "Chart.js", "Google Cloud Functions"],
+                        features: [
+                            "Seguimiento automático de gastos con categorización inteligente mediante IA",
+                            "Presupuestos personalizables con alertas y recordatorios configurables",
+                            "Análisis de tendencias de gastos con visualizaciones interactivas y comparativas",
+                            "Consejos financieros personalizados basados en algoritmos de IA y patrones de gasto",
+                            "Sincronización multi-plataforma y copias de seguridad automáticas en la nube"
+                        ],
+                        demoUrl: "https://demo-finanzas.vercel.app",
+                        githubUrl: "https://github.com/username/finance-app"
+                    },
+                    {
+                        id: "3",
+                        title: "Plataforma de Aprendizaje en Línea",
+                        image: "https://placehold.co/1200x600/dc2626/FFFFFF/png?text=Learning+Platform",
+                        category: "Aplicación Web",
+                        date: "Febrero 2025",
+                        description: "Una plataforma educativa completa con cursos interactivos, evaluaciones automatizadas y seguimiento del progreso. Diseñada para proporcionar una experiencia de aprendizaje personalizada y efectiva. El sistema incorpora elementos de gamificación para aumentar la participación de los estudiantes y mejorar la retención de conocimientos mediante técnicas de aprendizaje espaciado.",
+                        technologies: ["Vue.js", "Django", "PostgreSQL", "Docker", "AWS", "WebSockets"],
+                        features: [
+                            "Cursos interactivos con contenido multimedia adaptativo y ejercicios prácticos",
+                            "Sistema de evaluación automática con retroalimentación instantánea y personalizada",
+                            "Foros de discusión en tiempo real con moderación inteligente y filtros temáticos",
+                            "Seguimiento de progreso detallado con análisis de puntos fuertes y áreas de mejora",
+                            "Certificaciones digitales verificables con tecnología blockchain para mayor seguridad"
+                        ],
+                        demoUrl: "https://demo-elearning.vercel.app",
+                        githubUrl: "https://github.com/username/elearning-platform"
+                    },
+                    {
+                        id: "4",
+                        title: "Asistente Virtual con IA",
+                        image: "https://placehold.co/1200x600/7c3aed/FFFFFF/png?text=AI+Assistant",
+                        category: "Inteligencia Artificial",
+                        date: "Abril 2025",
+                        description: "Un asistente virtual potenciado por IA que puede realizar diversas tareas, responder preguntas y facilitar la productividad personal. Utiliza modelos avanzados de lenguaje y aprendizaje automático para entender y responder a consultas complejas. El asistente se integra con múltiples plataformas y servicios para ofrecer una experiencia coherente y unificada.",
+                        technologies: ["Python", "TensorFlow", "OpenAI API", "FastAPI", "WebRTC", "Redis"],
+                        features: [
+                            "Reconocimiento de voz en tiempo real con soporte para diferentes acentos y dialectos",
+                            "Procesamiento de lenguaje natural avanzado con comprensión de contexto y seguimiento de conversación",
+                            "Integración con más de 50 servicios externos populares para automatizar tareas complejas",
+                            "Personalización basada en el comportamiento del usuario mediante aprendizaje continuo",
+                            "Soporte multilingüe con traducción automática y adaptación cultural integrada"
+                        ],
+                        demoUrl: "https://demo-assistant.vercel.app",
+                        githubUrl: "https://github.com/username/ai-assistant"
+                    }
+                ];
+                
+                // Buscar el proyecto por ID
+                const project = projects.find(p => p.id === projectId) || projects[0];
+                
+                // Actualizar la interfaz con los datos del proyecto
+                document.getElementById('project-title').textContent = project.title;
+                document.getElementById('project-image').src = project.image;
+                document.getElementById('project-image').alt = project.title;
+                document.getElementById('project-category').textContent = project.category;
+                document.getElementById('project-date').textContent = project.date;
+                document.getElementById('project-description').textContent = project.description;
+                
+                document.getElementById('project-demo').href = project.demoUrl;
+                document.getElementById('project-github').href = project.githubUrl;
+                
+                // Cargar tecnologías
+                const techList = document.getElementById('project-technologies');
+                techList.innerHTML = '';
+                project.technologies.forEach(tech => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tech-tag';
+                    tag.textContent = tech;
+                    techList.appendChild(tag);
+                });
+                
+                // Cargar características
+                const featuresList = document.getElementById('project-features');
+                featuresList.innerHTML = '';
+                project.features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.className = 'feature-item';
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+                
+                // Añadir animación con GSAP
+                gsap.from('.project-content', {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'power3.out'
+                });
+                
+                // Animar el encabezado
+                gsap.from('#project-header', {
+                    scale: 1.05,
+                    opacity: 0.8,
+                    duration: 1.5,
+                    ease: 'power2.out'
+                });
+                
+                // Crear la galería de imágenes
+                const galleryContainer = document.createElement('section');
+                galleryContainer.className = 'w-full my-16 overflow-hidden';
+                galleryContainer.innerHTML = `
+                    <h2 class="text-2xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300">Galería del Proyecto</h2>
+                    <div id="project-gallery" class="flex overflow-x-auto gap-4 pb-4 w-screen -mx-[calc(50vw-50%)]"></div>
+                `;
+
+                // Insertar la galería después del contenido principal
+                document.querySelector('.project-content').parentNode.insertBefore(galleryContainer, document.querySelector('footer'));
+
+                // Generar imágenes para la galería basadas en el proyecto
+                const galleryElement = document.getElementById('project-gallery');
+                const baseColor = project.id === '1' ? '2563eb' : 
+                               project.id === '2' ? '059669' :
+                               project.id === '3' ? 'dc2626' : '7c3aed';
+
+                // Crear 5 imágenes para la galería con diferentes aspectos del proyecto
+                const galleryImages = [
+                    { url: `https://placehold.co/1200x800/${baseColor}/FFFFFF/png?text=Dashboard+View`, title: 'Panel principal' },
+                    { url: `https://placehold.co/1200x800/${baseColor}/FFFFFF/png?text=Features+Overview`, title: 'Funcionalidades' },
+                    { url: `https://placehold.co/1200x800/${baseColor}/FFFFFF/png?text=Mobile+Experience`, title: 'Versión móvil' },
+                    { url: `https://placehold.co/1200x800/${baseColor}/FFFFFF/png?text=User+Interface`, title: 'Interfaz de usuario' },
+                    { url: `https://placehold.co/1200x800/${baseColor}/FFFFFF/png?text=Technical+Architecture`, title: 'Arquitectura técnica' }
+                ];
+
+                // Añadir las imágenes a la galería
+                galleryImages.forEach(img => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.innerHTML = `
+                        <img src="${img.url}" alt="${img.title}">
+                        <div class="gallery-overlay">
+                            <h3 class="text-white text-lg font-medium">${img.title}</h3>
+                        </div>
+                    `;
+                    galleryElement.appendChild(galleryItem);
+                });
+
+                // Animación para la galería con GSAP
+                gsap.from('.gallery-item', {
+                    x: 100,
+                    opacity: 0,
+                    duration: 0.8,
+                    stagger: 0.15,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: '#project-gallery',
+                        start: 'top bottom-=100',
+                        toggleActions: 'play none none none'
+                    }
+                });
+                
+                // Añadir animación de scroll horizontal suave a la galería
+                const galleryScroll = document.getElementById('project-gallery');
+                if (galleryScroll) {
+                    galleryScroll.addEventListener('wheel', (e) => {
+                        if (e.deltaY !== 0) {
+                            e.preventDefault();
+                            galleryScroll.scrollLeft += e.deltaY;
+                        }
+                    }, { passive: false });
+                }
+                
+            } catch (error) {
+                console.error('Error al cargar el proyecto:', error);
+            }
+        }
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isOpen = mobileMenu.classList.contains('opacity-100');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                    mobileMenu.classList.add('opacity-0', '-translate-y-8', 'pointer-events-none');
+                } else {
+                    mobileMenu.classList.remove('opacity-0', '-translate-y-8', 'pointer-events-none');
+                    mobileMenu.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                }
+            });
+        }
+        
+        // Cargar el proyecto al cargar la página
+        window.addEventListener('DOMContentLoaded', loadProject);
+    </script>
+</body>
+</html>
