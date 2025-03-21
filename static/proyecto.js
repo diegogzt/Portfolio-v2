@@ -94,8 +94,8 @@
             demoUrl: 'https://restaurant-reservations.vercel.app',
             githubUrl: 'https://github.com/DiegoTov/restaurant-reservations',
             gallery: [
-                {url: 'img/np.png', title: 'Página principal'},
-                {url: 'img/restaurante.jpg', title: 'Visualización del menú'},
+                {url: 'img/res-index.png', title: 'Página principal'},
+                {url: 'img/rest-int.png', title: 'Visualización del menú'},
                 {url: 'img/reserva.png', title: 'Sistema de reservas'},
                 {url: 'img/menu.png', title: 'Menu de las comidas'},
             ]

@@ -32,7 +32,7 @@ function addMessage(role, message) {
     }
 
     div.style.maxWidth = '510px';
-    div.style.marginLeft = '20px';
+
 
     chatBody.appendChild(div);
     chatBody.scrollTop = chatBody.scrollHeight;
