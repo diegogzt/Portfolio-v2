@@ -53,6 +53,30 @@
             ]
         },
         {
+            id: 2,
+            title: 'Tienda de NFT',
+            category: 'Plataforma de Comercio',
+            date: 'Abril 2025 (A falta del backend para la subida online)',
+            image: 'img/pingu-market',
+            description: 'Una plataforma de comercio electrónico completa con catálogo de productos, carrito de compras, pasarela de pagos y gestión de pedidos.',
+            technologies: ['JavaScript', 'HTML', 'CSS'],
+            features: [
+                'Trabajo Freelance para un cliente',
+                'Catálogo de productos con filtrado y búsqueda',
+                'Insersión de productos mediante fichero JSON',
+                'Pagina con Gameboy interactiva',
+                'Diferente disposcición de mismos elementos'
+            ],
+            demoUrl: 'https://ecommerce-demo.vercel.app',
+            githubUrl: 'https://github.com/diegogzt/pingu-project',
+            gallery: [
+                {url: 'img/pingu-market.png', title: 'Página principal (Cliente cambiara texto)'},
+                {url: 'img/articulos.png', title: 'Página de producto'},
+                {url: 'img/more-productos.png', title: 'Diferente disposicion de productos'},
+                {url: 'img/pingu-play.png', title: 'Pagina interactiva Gameboy'},
+            ]
+        },
+        {
             id: 3,
             title: 'Página de reservas para Restaurantes',
             category: 'Landing Page y Reservas',
