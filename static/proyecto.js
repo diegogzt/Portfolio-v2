@@ -53,6 +53,7 @@
             ]
         },
         {
+<<<<<<< HEAD
             id: 2,
             title: 'Tienda de NFT',
             category: 'Plataforma de Comercio',
@@ -77,6 +78,8 @@
             ]
         },
         {
+=======
+>>>>>>> parent of 52e821c (Revert "delete one seciton")
             id: 3,
             title: 'Página de reservas para Restaurantes',
             category: 'Landing Page y Reservas',
