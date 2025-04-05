@@ -68,7 +68,7 @@
                 'Diferente disposcición de mismos elementos'
             ],
             demoUrl: 'https://ecommerce-demo.vercel.app',
-            githubUrl: 'https://github.com/diegogzt/pingu-project',
+            githubUrl: '404.html',
             gallery: [
                 {url: 'img/pingu-market.png', title: 'Página principal (Cliente cambiara texto)'},
                 {url: 'img/articulos.png', title: 'Página de producto'},
