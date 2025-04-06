@@ -13,7 +13,7 @@
         }
     ],
     "env": {
-        "OPENAI_API_KEY": "sk-eb84e6b408164943bae95df877b0685b",
         "LLAMA_API_KEY": "39de9221-82d9-4052-b6d3-433f54b3f4fd"
+        ,"REPLICATE_API_KEY": "r8_07wBjbGPTnBZ9Et0iKLMRBmBhwbc3zl0YzLWI"
     }
 }
