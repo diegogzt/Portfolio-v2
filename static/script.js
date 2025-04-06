@@ -146,7 +146,7 @@ async function sendMessage(retryCount = 0) {
 
     // Obtener el modelo seleccionado o usar 'replicate' si es una solicitud de imagen
     const modelSelector = document.getElementById('model-selector');
-    let selectedModel = modelSelector.value || 'replicate'; // Usar llama como fallback
+    let selectedModel = modelSelector.value || 'llama'; // Usar llama como fallback
 
     // Si es una solicitud de imagen, usar el modelo de Replicate directamente
     if (isImageRequest) {
