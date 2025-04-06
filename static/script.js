@@ -131,7 +131,7 @@ async function sendMessage(retryCount = 0) {
     // Set a local retry flag
     isRetrying = retryCount > 0;
 
-    // Detectar si es una solicitud de imagen
+    // Detect if it's an image request based on command prefixes
     const isImageRequest =
         message.toLowerCase().startsWith("/imagen ") ||
         message.toLowerCase().startsWith("/image ") ||
@@ -139,7 +139,7 @@ async function sendMessage(retryCount = 0) {
 
     // Obtener el modelo seleccionado o usar 'replicate' si es una solicitud de imagen
     const modelSelector = document.getElementById('model-selector');
-    let selectedModel = modelSelector.value || 'llama'; // Usar llama como fallback
+    let selectedModel = modelSelector.value || 'replicate'; // Usar llama como fallback
 
     // Si es una solicitud de imagen, usar el modelo de Replicate directamente
     if (isImageRequest) {
@@ -269,11 +269,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Configurar el tooltip
     setupTooltip();
 });
-
 // Función para actualizar el estado del modelo en la interfaz
 function updateModelStatus() {
     const modelSelector = document.getElementById('model-selector');
-    const selectedModel = modelSelector.value;
+    const selectedModel = modelSelector.value === 'image' ? 'replicate' : modelSelector.value;
     const statusText = document.querySelector('.text-green-400') || document.querySelector('.text-blue-400') || document.querySelector('.text-purple-400');
     const previousModel = statusText.getAttribute('data-current-model') || 'llama';
 
@@ -281,7 +280,7 @@ function updateModelStatus() {
     if (selectedModel === 'llama') {
         statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> Usando Llama 3';
         statusText.className = 'text-blue-400 text-xs flex items-center gap-1';
-    } else if (selectedModel === 'image' || selectedModel === 'replicate') {
+    } else if (selectedModel === 'replicate') {
         statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span> Generador de Imágenes';
         statusText.className = 'text-purple-400 text-xs flex items-center gap-1';
     }
@@ -294,7 +293,7 @@ function updateModelStatus() {
         let modelName = 'Llama 3';
         let modelMessage = '¿En qué puedo ayudarte?';
 
-        if (selectedModel === 'image' || selectedModel === 'replicate') {
+        if (selectedModel === 'replicate') {
             modelName = 'Generador de Imágenes';
             modelMessage = 'Ahora puedes pedirme que genere imágenes. Escribe una descripción detallada de lo que quieres ver o usa el comando /imagen seguido de tu descripción.';
         }
@@ -302,6 +301,7 @@ function updateModelStatus() {
         addMessage("bot", `Has cambiado al modelo ${modelName}. ${modelMessage}`);
     }
 }
+
 
 // Función para configurar el comportamiento del tooltip
 function setupTooltip() {
