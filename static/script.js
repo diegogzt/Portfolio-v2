@@ -148,11 +148,6 @@ async function sendMessage(retryCount = 0) {
     const modelSelector = document.getElementById('model-selector');
     let selectedModel = modelSelector.value || 'llama'; // Usar llama como fallback
 
-    // Si es una solicitud de imagen, usar el modelo de Replicate directamente
-    if (isImageRequest) {
-        selectedModel = 'replicate';
-    }
-
     try {
         // Obtener la URL base
         const baseUrl = window.location.origin;
