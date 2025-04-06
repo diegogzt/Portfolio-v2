@@ -148,7 +148,6 @@
         }
         
         .user-message::after {
-            content: '';
             position: absolute;
             right: -8px;
             top: 0;
@@ -169,7 +168,6 @@
         }
         
         .bot-message::after {
-            content: '';
             position: absolute;
             left: -8px;
             top: 0;
@@ -402,15 +400,17 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                     <!-- Barra de estado -->
                     <div class="bg-[#0d0020] p-4 border-b border-purple-900/20 flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-indigo-700 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                             </svg>
                         </div>
                         <div>
                             <h3 class="text-white font-medium">Asistente de Diego</h3>
                             <p class="text-green-400 text-xs flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
-                                Conectado
+                                <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+                                Usando Llama 3
                             </p>
                         </div>
                     </div>
@@ -423,11 +423,25 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
         
                     <!-- Pie del chat -->
                     <div class="flex flex-col gap-2 mx-4 mb-2">
-                        <div class="flex justify-end">
-                            <select id="model-selector" class="bg-[#0d0020] text-white text-sm rounded-lg px-3 py-1 border border-purple-900/20 focus:border-purple-500/50 focus:outline-none">
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs text-gray-400 flex items-center">
+                                <span class="hidden sm:inline-block">Modelo actual:</span>
+                            </div>
+                            <select id="model-selector"
+                                class="bg-[#0d0020] text-white text-sm rounded-lg px-3 py-1 border border-purple-900/20 focus:border-purple-500/50 focus:outline-none">
                                 <option value="llama">Llama 3</option>
                                 <option value="deepseek">DeepSeek</option>
+                                <option value="image">Generador de Imágenes</option>
                             </select>
+                        </div>
+                        <div class="text-xs text-purple-400 bg-[#0d0020]/30 p-2 rounded-lg border border-purple-900/10">
+                            <p class="mb-1"><span class="font-semibold">¡Nuevo!</span> Ahora puedes generar imágenes de tres formas:</p>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li>Selecciona "Generador de Imágenes" en el selector de modelos</li>
+                                <li>Usa el comando <code class="bg-[#0d0020] px-1 rounded">/imagen</code> seguido de tu descripción</li>
+                                <li>También puedes usar <code class="bg-[#0d0020] px-1 rounded">/generar</code> o <code
+                                        class="bg-[#0d0020] px-1 rounded">/image</code></li>
+                            </ul>
                         </div>
                     </div>
                     <div
@@ -700,7 +714,7 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                                 </svg>
                                 Demo
                             </a>
-                            <a href="#" class="text-sm text-purple-400 border border-purple-900/40 hover:bg-purple-900/20 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
+                            <a href="404.html" class="text-sm text-purple-400 border border-purple-900/40 hover:bg-purple-900/20 px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 flex-1 justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                                 </svg>
