@@ -421,7 +421,21 @@ class="header fixed z-10 w-[100dvw] h-[9dvh] backdrop-blur-sm border-b border-pu
                         
                     </div>
         
+                    <!-- Pie del chat -->
+                    <div class="flex flex-col gap-2  mb-2">
+                        <div class="flex justify-end items-center pr-2">
+                            <div class="text-xs text-gray-400 flex items-center">
+                                <span class="hidden sm:inline-block">Modelo actual:</span>
+                            </div>
+                            <select id="model-selector"
+                                class="bg-[#0d0020] text-white text-sm rounded-lg px-3 py-1 border border-purple-900/20 focus:border-purple-500/50 focus:outline-none">
+                                <option value="llama">Llama 3</option>
+                                <option value="image">Generador de Imágenes</option>
 
+                            </select>
+                        </div>
+
+                    </div>
                     <div
                         class="chat-footer bg-[#0d0020]/80 flex justify-between items-center p-4 mb-8 rounded-xl border border-purple-900/20 transition-all duration-300 focus-within:border-purple-500/50 focus-within:shadow-purple-900/30 focus-within:shadow-lg">
                         <textarea class="myInput text-white w-full h-auto  resize-none" id="user-input"
