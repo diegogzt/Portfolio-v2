@@ -5,6 +5,9 @@
 .pointer-events-none {
   pointer-events: none;
 }
+.collapse {
+  visibility: collapse;
+}
 .absolute {
   position: absolute;
 }
@@ -149,6 +152,9 @@
 .block {
   display: block;
 }
+.contents {
+  display: contents;
+}
 .flex {
   display: flex;
 }
@@ -158,11 +164,17 @@
 .hidden {
   display: none;
 }
+.inline {
+  display: inline;
+}
 .inline-block {
   display: inline-block;
 }
 .inline-flex {
   display: inline-flex;
+}
+.table {
+  display: table;
 }
 .h-1 {
   height: calc(var(--spacing) * 1);
@@ -320,6 +332,12 @@
 .flex-grow {
   flex-grow: 1;
 }
+.grow {
+  flex-grow: 1;
+}
+.grow\! {
+  flex-grow: 1 !important;
+}
 .-translate-y-1\/2 {
   --tw-translate-y: calc(calc(1/2 * 100%) * -1);
   translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -342,8 +360,14 @@
 .animate-pulse {
   animation: var(--animate-pulse);
 }
+.animate-spin {
+  animation: var(--animate-spin);
+}
 .resize-none {
   resize: none;
+}
+.list-disc {
+  list-style-type: disc;
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -399,6 +423,13 @@
 .gap-12 {
   gap: calc(var(--spacing) * 12);
 }
+.space-y-1 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
 .space-y-2 {
   :where(& > :not(:last-child)) {
     --tw-space-y-reverse: 0;
@@ -441,6 +472,11 @@
     margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
   }
 }
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .overflow-hidden {
   overflow: hidden;
 }
@@ -449,6 +485,9 @@
 }
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+.rounded {
+  border-radius: 0.25rem;
 }
 .rounded-2xl {
   border-radius: var(--radius-2xl);
@@ -473,6 +512,10 @@
 .border-1 {
   border-style: var(--tw-border-style);
   border-width: 1px;
+}
+.border-4 {
+  border-style: var(--tw-border-style);
+  border-width: 4px;
 }
 .border-t {
   border-top-style: var(--tw-border-style);
@@ -506,6 +549,9 @@
 .border-slate-50 {
   border-color: var(--color-slate-50);
 }
+.border-t-purple-500 {
+  border-top-color: var(--color-purple-500);
+}
 .bg-\[\#0A0118\] {
   background-color: #0A0118;
 }
@@ -514,6 +560,12 @@
 }
 .bg-\[\#0d0020\] {
   background-color: #0d0020;
+}
+.bg-\[\#0d0020\]\/30 {
+  background-color: color-mix(in oklab, #0d0020 30%, transparent);
+}
+.bg-\[\#0d0020\]\/70 {
+  background-color: color-mix(in oklab, #0d0020 70%, transparent);
 }
 .bg-\[\#0d0020\]\/80 {
   background-color: color-mix(in oklab, #0d0020 80%, transparent);
@@ -541,6 +593,9 @@
 }
 .bg-green-400 {
   background-color: var(--color-green-400);
+}
+.bg-purple-400 {
+  background-color: var(--color-purple-400);
 }
 .bg-violet-950 {
   background-color: var(--color-violet-950);
@@ -649,6 +704,9 @@
 .px-0 {
   padding-inline: calc(var(--spacing) * 0);
 }
+.px-1 {
+  padding-inline: calc(var(--spacing) * 1);
+}
 .px-2 {
   padding-inline: calc(var(--spacing) * 2);
 }
@@ -708,6 +766,9 @@
 }
 .pb-8 {
   padding-bottom: calc(var(--spacing) * 8);
+}
+.pl-4 {
+  padding-left: calc(var(--spacing) * 4);
 }
 .text-center {
   text-align: center;
@@ -994,6 +1055,13 @@
     }
   }
 }
+.hover\:text-purple-300 {
+  &:hover {
+    @media (hover: hover) {
+      color: var(--color-purple-300);
+    }
+  }
+}
 .hover\:text-purple-400 {
   &:hover {
     @media (hover: hover) {
@@ -1055,6 +1123,11 @@
 .sm\:ml-2 {
   @media (width >= 40rem) {
     margin-left: calc(var(--spacing) * 2);
+  }
+}
+.sm\:inline-block {
+  @media (width >= 40rem) {
+    display: inline-block;
   }
 }
 .sm\:w-\[2\.8em\] {
@@ -1290,6 +1363,7 @@
     --color-indigo-700: oklch(45.7% 0.24 277.023);
     --color-indigo-800: oklch(39.8% 0.195 277.366);
     --color-violet-950: oklch(28.3% 0.141 291.089);
+    --color-purple-300: oklch(82.7% 0.119 306.383);
     --color-purple-400: oklch(71.4% 0.203 305.504);
     --color-purple-500: oklch(62.7% 0.265 303.9);
     --color-purple-600: oklch(55.8% 0.288 302.321);
@@ -1337,6 +1411,7 @@
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --animate-spin: spin 1s linear infinite;
     --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     --blur-sm: 8px;
     --blur-md: 12px;
@@ -1753,6 +1828,11 @@
   syntax: "*";
   inherits: false;
   initial-value: 1;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes pulse {
   50% {
