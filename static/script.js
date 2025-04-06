@@ -12,8 +12,11 @@ const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("button");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> main
 <<<<<<< Updated upstream
 // Mensaje de bienvenida al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
@@ -326,9 +329,13 @@ function setupTooltip() {
 <<<<<<< Updated upstream
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+=======
+>>>>>>> main
 // Modificar la función addMessage para manejar imágenes
 function addMessage(role, message) {
     areaAuto();
@@ -552,10 +559,14 @@ function updateModelStatus() {
     const selectedModel = modelSelector.value;
     const statusText = document.querySelector('.text-green-400');
 <<<<<<< HEAD
+<<<<<<< HEAD
     const previousModel = statusText.getAttribute('data-current-model') || 'deepseek';
 =======
     const previousModel = statusText.getAttribute('data-current-model') || 'llama';
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+    const previousModel = statusText.getAttribute('data-current-model') || 'llama';
+>>>>>>> main
 
     // Actualizar el indicador visual
     if (selectedModel === 'llama') {
@@ -565,11 +576,14 @@ function updateModelStatus() {
         statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span> Generador de Imágenes';
         statusText.className = 'text-purple-400 text-xs flex items-center gap-1';
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else {
         statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span> Usando DeepSeek';
         statusText.className = 'text-green-400 text-xs flex items-center gap-1';
 =======
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+>>>>>>> main
     }
 
     // Guardar el modelo actual
@@ -578,6 +592,7 @@ function updateModelStatus() {
     // Si el modelo ha cambiado, añadir un mensaje del sistema
     if (previousModel !== selectedModel && previousModel) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         let modelName = 'DeepSeek';
         let modelMessage = '¿En qué puedo ayudarte?';
 
@@ -585,11 +600,16 @@ function updateModelStatus() {
             modelName = 'Llama 3';
         } else if (selectedModel === 'image') {
 =======
+=======
+>>>>>>> main
         let modelName = 'Llama 3';
         let modelMessage = '¿En qué puedo ayudarte?';
 
         if (selectedModel === 'image') {
+<<<<<<< HEAD
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+>>>>>>> main
             modelName = 'Generador de Imágenes';
             modelMessage = 'Ahora puedes pedirme que genere imágenes. Escribe una descripción detallada de lo que quieres ver o usa el comando /imagen seguido de tu descripción.';
         }
@@ -597,8 +617,13 @@ function updateModelStatus() {
         addMessage("bot", `Has cambiado al modelo ${modelName}. ${modelMessage}`);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
 >>>>>>> Stashed changes
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+}
+>>>>>>> Stashed changes
+>>>>>>> main
