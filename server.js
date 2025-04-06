@@ -228,7 +228,10 @@ app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
     const model = req.body.model || 'llama'; // 'llama' o 'replicate'
 >>>>>>> Stashed changes
+<<<<<<< HEAD
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+>>>>>>> main
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
@@ -294,6 +297,7 @@ app.post('/chat', async (req, res) => {
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (error.status === 402 && error.error?.message === 'Insufficient Balance') {
             return res.status(402).json({
                 error: "Saldo insuficiente para realizar esta operación. Por favor, recarga tu cuenta o contacta al administrador."
@@ -303,6 +307,8 @@ app.post('/chat', async (req, res) => {
         return res.status(500).json({
             error: "Error al procesar la solicitud.",
 =======
+=======
+>>>>>>> main
 <<<<<<< Updated upstream
         let errorMessage = "Error al comunicarse con el chatbot.";
         if (req.body.model === 'llama') {
@@ -335,7 +341,10 @@ app.post('/generate-image', async (req, res) => {
         return res.status(500).json({
             error: "Error al generar la imagen.",
 >>>>>>> Stashed changes
+<<<<<<< HEAD
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+>>>>>>> main
             details: error.message
         });
     }
@@ -350,6 +359,7 @@ app.listen(PORT, () => {
 
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // Importaciones para Replicate
 import Replicate from 'replicate';
@@ -445,7 +455,12 @@ app.post('/chat', async (req, res) => {
 });
 =======
 =======
+>>>>>>> main
+=======
     console.log('Soporta modelos: Llama y Replicate');
 });
 >>>>>>> Stashed changes
+<<<<<<< HEAD
 >>>>>>> 74834b5 (agregar generacion de imagenes)
+=======
+>>>>>>> main
