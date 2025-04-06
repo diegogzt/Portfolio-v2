@@ -111,7 +111,7 @@ const setCorsHeaders = (res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
     res.setHeader(
         'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, o-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
     return res;
 };
@@ -211,7 +211,7 @@ async function handleLlamaRequest(userMessage, controller) {
 // Endpoint del chat unificado
 app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
-    const model = req.body.model || 'deepseek'; // 'deepseek' o 'llama'
+    const model = req.body.model || 'deepseek'; // 'deepseek', 'llama' o 'image'
 
     if (!userMessage) {
         return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
@@ -224,34 +224,34 @@ app.post('/chat', async (req, res) => {
 
         let botResponse;
 
-        // Seleccionar el modelo a utilizar
-        console.log(`Usando modelo: ${model}`);
         if (model === 'llama') {
             botResponse = await handleLlamaRequest(userMessage, controller);
-        } else {
-            // Valor por defecto: DeepSeek
+        } else if (model === 'deepseek') {
             botResponse = await handleDeepSeekRequest(userMessage, controller);
+        } else {
+            // ...existing code for image generation...
         }
 
         clearTimeout(timeoutId);
-        
+
         return res.status(200).json({ response: botResponse });
 
     } catch (error) {
-        console.error(`Error en la API de ${req.body.model || 'deepseek'}:`, error);
-        
+        console.error(`Error en la API de ${model}:`, error);
+
         // Manejo específico de errores
         if (error.name === 'AbortError') {
             return res.status(504).json({ error: "La solicitud tomó demasiado tiempo en responder." });
         }
 
-        let errorMessage = "Error al comunicarse con el chatbot.";
-        if (req.body.model === 'llama') {
-            errorMessage = "Error al comunicarse con el modelo Llama. Puede intentar con DeepSeek.";
+        if (error.status === 402 && error.error?.message === 'Insufficient Balance') {
+            return res.status(402).json({
+                error: "Saldo insuficiente para realizar esta operación. Por favor, recarga tu cuenta o contacta al administrador."
+            });
         }
 
         return res.status(500).json({
-            error: errorMessage,
+            error: "Error al procesar la solicitud.",
             details: error.message
         });
     }
@@ -265,3 +265,95 @@ app.listen(PORT, () => {
 
 
 
+// Importaciones para Replicate
+import Replicate from 'replicate';
+
+// Añadir esta constante con tu token de Replicate
+const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN || 'r8_GypGAnYey2S54FSfwZB5Xs5uvD2krlh2XWNNt';
+
+// Inicializar el cliente de Replicate
+const replicate = new Replicate({
+    auth: REPLICATE_API_TOKEN,
+});
+
+// Función para generar imágenes con Replicate
+async function generateImage(prompt) {
+    try {
+        console.log('Generando imagen con prompt:', prompt);
+
+        // Usamos el modelo Flux Schnell de Replicate
+        const [output] = await replicate.run(
+            "black-forest-labs/flux-schnell",
+            {
+                input: {
+                    prompt: prompt,
+                },
+            }
+        );
+
+        console.log('Imagen generada:', output);
+        return output; // URL de la imagen generada
+    } catch (error) {
+        console.error('Error al generar imagen:', error);
+        throw error;
+    }
+}
+
+// Endpoint para generar imágenes
+app.post('/generate-image', async (req, res) => {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+        return res.status(400).json({ error: "Se requiere un prompt para generar la imagen." });
+    }
+
+    try {
+        const imageUrl = await generateImage(prompt);
+        return res.status(200).json({ imageUrl });
+    } catch (error) {
+        console.error('Error en el endpoint de generación de imágenes:', error);
+        return res.status(500).json({
+            error: "Error al generar la imagen.",
+            details: error.message
+        });
+    }
+});
+
+// Modificar el endpoint de chat para integrar la generación de imágenes con Replicate
+app.post('/chat', async (req, res) => {
+    const userMessage = req.body.message;
+
+    if (!userMessage) {
+        return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
+    }
+
+    try {
+        let botResponse;
+
+        // Detectar si es una solicitud de generación de imagen
+        const isImageRequest =
+            userMessage.toLowerCase().startsWith("/imagen ") ||
+            userMessage.toLowerCase().startsWith("/image ") ||
+            userMessage.toLowerCase().startsWith("/generar ");
+
+        if (isImageRequest) {
+            // Extraer el prompt para la imagen
+            const imagePrompt = userMessage.substring(userMessage.indexOf(' ') + 1).trim();
+
+            console.log("Generando imagen con Replicate...");
+            const imageUrl = await generateImage(imagePrompt);
+
+            botResponse = `¡He generado esta imagen para ti! [IMAGE_URL:${imageUrl}]`;
+        } else {
+            botResponse = "Lo siento, no entiendo tu solicitud. Por favor, intenta con un comando válido.";
+        }
+
+        return res.status(200).json({ response: botResponse });
+    } catch (error) {
+        console.error("Error en el endpoint de chat:", error);
+        return res.status(500).json({
+            error: "Error al procesar la solicitud.",
+            details: error.message
+        });
+    }
+});
