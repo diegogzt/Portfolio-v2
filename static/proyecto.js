@@ -311,3 +311,4 @@ document.addEventListener('DOMContentLoaded', loadProjectData, function () {
         img.setAttribute('loading', 'lazy');
     }
 });
+loadGallery();
