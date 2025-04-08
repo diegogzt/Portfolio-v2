@@ -306,3 +306,10 @@
 
         // Cargar los datos del proyecto al cargar la página
 document.addEventListener('DOMContentLoaded', loadProjectData);
+// Agregar loading="lazy" a todas las imágenes
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.getElementsByTagName('img');
+    for (let img of images) {
+        img.setAttribute('loading', 'lazy');
+    }
+});
