@@ -71,10 +71,7 @@ async function loadProjectData() {
                 sessionStorage.removeItem('pageReloaded');
             }, 1000);
         }
-    } else {
-        // Proyecto no encontrado, redirigir a la página principal
-        window.location.href = '/';
-    }
+    } 
 }
 
 // The rest of your code remains unchanged
