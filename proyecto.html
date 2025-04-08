@@ -326,7 +326,7 @@
     <main class="pt-[9dvh] flex-grow">
         <!-- Cabecera del proyecto -->
         <div id="project-header" class="project-header">
-            <img id="project-image" src="" alt="Imagen del proyecto">
+            <img loading="lazy" id="project-image" src="" alt="Imagen del proyecto">
         </div>
         
         <div class="container mx-auto px-6">
@@ -543,7 +543,7 @@
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
                     galleryItem.innerHTML = `
-                        <img src="${img.url}" alt="${img.title}">
+                        <img loading="lazy" src="${img.url}" alt="${img.title}">
                         <div class="gallery-overlay">
                             <h3 class="text-white text-lg font-medium">${img.title}</h3>
                         </div>
