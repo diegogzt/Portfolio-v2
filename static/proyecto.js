@@ -307,4 +307,4 @@
         // Cargar los datos del proyecto al cargar la página
         document.addEventListener('DOMContentLoaded', loadProjectData);
         // Recargar la página después de cargar los datos del proyecto
-        window.addEventListener('popstate', loadProjectData);
+        window.addEventListener('popstate', location.reload);
