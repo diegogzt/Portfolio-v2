@@ -305,4 +305,4 @@
         }
 
         // Cargar los datos del proyecto al cargar la página
-document.addEventListener('DOMContentLoaded', loadProjectData, loadGallery(currentProject.gallery));
+document.addEventListener('DOMContentLoaded', loadProjectData);
