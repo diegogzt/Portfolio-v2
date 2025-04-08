@@ -131,10 +131,15 @@ async function sendMessage(retryCount = 0) {
     // Set a local retry flag
     isRetrying = retryCount > 0;
 
+    const imageOption = document.getElementById('image');
     // Detect if it's an image request based on command prefixes
     const isImageRequest =
         message.toLowerCase().startsWith("/imagen ") ||
         message.toLowerCase().startsWith("/image ") ||
+        message.toLowerCase().startsWith("genera una imagen ") ||
+        message.toLowerCase().startsWith("/img ") ||
+        message.toLowerCase().startsWith("genera ") ||
+        imageOption && imageOption.value === 'image'
         message.toLowerCase().startsWith("/generar ");
 
     // Obtener el modelo seleccionado o usar 'replicate' si es una solicitud de imagen
