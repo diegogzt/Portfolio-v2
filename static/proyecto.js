@@ -306,18 +306,8 @@
 
         // Cargar los datos del proyecto al cargar la página
         document.addEventListener('DOMContentLoaded', loadProjectData);
-
-function recargarPaginaDosVeces() {
-    let recargas = 0;
-
-    function recargar() {
-        recargas++;
-        if (recargas < 2) {
-            location.reload();
-        }
-    }
-
-    window.onload = recargar; // Recarga la primera vez después de la carga inicial
+function recargarPaginaAlCargar() {
+    location.reload();
 }
 
-recargarPaginaDosVeces();
+window.onload = recargarPaginaAlCargar;
