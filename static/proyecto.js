@@ -33,7 +33,7 @@
             title: 'Portfolio Personal',
             category: 'Aplicación Web',
             date: 'Marzo 2025',
-            description: 'Un portfolio personal con un chatbot con API de llama y deepseek para que la empresa este dispuesta a contratarme.',
+            description: 'MIDU TENGO UN BUG EL CUAL NO ME CARGAN LAS IMAGENES Y NO SE COMO SOLUCIONARLO   Un portfolio personal con un chatbot con API de llama y deepseek para que la empresa este dispuesta a contratarme.',
             technologies: ['Node.js', 'Javascript', 'Tailwind', 'CSS', 'HTML', 'Vercel', 'Cloudflare'],
             features: [
                 'Chat en tiempo real con IA',
@@ -55,7 +55,7 @@
         {
             id: 2,
             title: 'Tienda de NFT',
-            category: 'Plataforma de Comercio',
+            category: 'Plataforma de Comercio (MIDU RECARGA LA PAGINA)',
             date: 'Abril 2025 (A falta del backend para la subida online)',
             image: 'img/pingu-market',
             description: 'Una plataforma de comercio electrónico completa con catálogo de productos, carrito de compras, pasarela de pagos y gestión de pedidos.',
@@ -79,7 +79,7 @@
         {
             id: 3,
             title: 'Página de reservas para Restaurantes',
-            category: 'Landing Page y Reservas',
+            category: 'Landing Page y Reservas, MIDU TENGO UN BUG EL CUAL NO ME CARGAN LAS IMAGENES Y NO SE COMO SOLUCIONARLO',
             date: 'Marzo 2025',
             image: 'img/np.png',
             description: 'Una página web diseñada para restaurantes que permite a los usuarios explorar el menú, realizar reservas en línea y obtener información sobre el lugar.',
