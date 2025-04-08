@@ -67,7 +67,7 @@
                 'Pagina con Gameboy interactiva',
                 'Diferente disposcición de mismos elementos'
             ],
-            demoUrl: 'https://ecommerce-demo.vercel.app',
+            demoUrl: '404.html',
             githubUrl: '404.html',
             gallery: [
                 {url: 'img/pingu-market.png', title: 'Página principal (Cliente cambiara texto)'},
@@ -91,8 +91,8 @@
                 'Interfaz responsiva para dispositivos móviles',
                 'Integración con APIs externas para datos en tiempo real'
             ],
-            demoUrl: 'https://restaurant-reservations.vercel.app',
-            githubUrl: 'https://github.com/DiegoTov/restaurant-reservations',
+            demoUrl: '404.html',
+            githubUrl: '404.html',
             gallery: [
                 {url: 'img/res-index.png', title: 'Página principal'},
                 {url: 'img/rest-int.png', title: 'Visualización del menú'},
@@ -306,3 +306,7 @@
 
         // Cargar los datos del proyecto al cargar la página
         document.addEventListener('DOMContentLoaded', loadProjectData);
+        // Recargar la página después de cargar los datos del proyecto
+        window.onload = function() {
+            location.reload();
+        };
