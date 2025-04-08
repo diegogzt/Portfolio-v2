@@ -307,6 +307,10 @@
         // Cargar los datos del proyecto al cargar la página
         document.addEventListener('DOMContentLoaded', loadProjectData);
         // Recargar la página después de cargar los datos del proyecto
-        window.onload = function() {
-            location.reload();
-        };
+        // Agregar event listener para recargar la página después de cargar los datos
+        window.addEventListener('load', () => {
+            if (!sessionStorage.getItem('pageLoaded')) {
+                sessionStorage.setItem('pageLoaded', 'true');
+                window.location.reload();
+            }
+        });
