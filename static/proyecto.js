@@ -23,103 +23,61 @@
         }
 
     // Cargar datos del proyecto
-    async function loadProjectData() {
-        projectId = getProjectIdFromUrl();
+// Modify your loadProjectData function to add auto-reload functionality
+async function loadProjectData() {
+    // Check if this is a fresh page load or a reload
+    const isReloaded = sessionStorage.getItem('pageReloaded');
 
+    // Get project ID from URL
+    projectId = getProjectIdFromUrl();
+
+    // Rest of your existing code stays the same
     // Definición de todos los proyectos
     allProjects = [
-        {
-            id: 1,
-            title: 'Portfolio Personal',
-            category: 'Aplicación Web',
-            date: 'Marzo 2025',
-            description: 'Un portfolio personal con un chatbot con API de llama y deepseek para que la empresa este dispuesta a contratarme.',
-            technologies: ['Node.js', 'Javascript', 'Tailwind', 'CSS', 'HTML', 'Vercel', 'Cloudflare'],
-            features: [
-                'Chat en tiempo real con IA',
-                'Paleta de colores oscuros',
-                'Interfaz responsiva para todos los dispositivos',
-                'Formulario de contacto funcional',
-                'Pagina dinamica'
-            ],
-            demoUrl: 'index.html',
-            githubUrl: 'https://github.com/diegogzt',
-            gallery: [
-                {url: 'img/portfolio.png', title: 'Interfaz principal'},
-                {url: 'img/index-chat.png', title: 'Chat con IA'},
-                {url: 'img/index-card.png', title: 'Seccion con Cartas'},
-                {url: 'img/index-contacto.png', title: 'Formulario de contacto'},
-                {url: 'img/index-footer.png', title: 'Footer atractivo'}
-            ]
-        },
-        {
-            id: 2,
-            title: 'Tienda de NFT',
-            category: 'Plataforma de Comercio',
-            date: 'Abril 2025 (A falta del backend para la subida online)',
-            image: 'img/pingu-market',
-            description: 'Una plataforma de comercio electrónico completa con catálogo de productos, carrito de compras, pasarela de pagos y gestión de pedidos.',
-            technologies: ['JavaScript', 'HTML', 'CSS'],
-            features: [
-                'Trabajo Freelance para un cliente',
-                'Catálogo de productos con filtrado y búsqueda',
-                'Insersión de productos mediante fichero JSON',
-                'Pagina con Gameboy interactiva',
-                'Diferente disposcición de mismos elementos'
-            ],
-            demoUrl: '404.html',
-            githubUrl: '404.html',
-            gallery: [
-                {url: 'img/pingu-market.png', title: 'Página principal (Cliente cambiara texto)'},
-                {url: 'img/articulos.png', title: 'Página de producto'},
-                {url: 'img/more-productos.png', title: 'Diferente disposicion de productos'},
-                {url: 'img/pingu-play.png', title: 'Pagina interactiva Gameboy'},
-            ]
-        },
-        {
-            id: 3,
-            title: 'Página de reservas para Restaurantes',
-            category: 'Landing Page y Reservas',
-            date: 'Marzo 2025',
-            image: 'img/np.png',
-            description: 'Una página web diseñada para restaurantes que permite a los usuarios explorar el menú, realizar reservas en línea y obtener información sobre el lugar.',
-            technologies: ['Node.js', 'JavaScript', 'Tailwind CSS', 'Cloudflare', 'HTML'],
-            features: [
-                'Sistema de reservas en línea',
-                'Visualización del menú con imágenes',
-                'Información del restaurante y ubicación',
-                'Interfaz responsiva para dispositivos móviles',
-                'Integración con APIs externas para datos en tiempo real'
-            ],
-            demoUrl: '404.html',
-            githubUrl: '404.html',
-            gallery: [
-                {url: 'img/res-index.png', title: 'Página principal'},
-                {url: 'img/rest-int.png', title: 'Visualización del menú'},
-                {url: 'img/reserva.png', title: 'Sistema de reservas'},
-                {url: 'img/menu.png', title: 'Menu de las comidas'},
-            ]
-        }
-    ];         // Encontrar el proyecto actual
-            const currentProject = allProjects.find(project => project.id == projectId);
+        // Your existing projects array...
+    ];
+
+    // Encontrar el proyecto actual
+    const currentProject = allProjects.find(project => project.id == projectId);
 
     if (currentProject) {
         // Actualizar el contenido de la página
         updateProjectContent(currentProject);
 
-    // Cargar la galería de imágenes
-    loadGallery(currentProject.gallery);
+        // Cargar la galería de imágenes
+        loadGallery(currentProject.gallery);
 
-    // Cargar otros proyectos relacionados
-    loadOtherProjects(currentProject.id);
+        // Cargar otros proyectos relacionados
+        loadOtherProjects(currentProject.id);
 
-    // Inicializar animaciones
-    initAnimations();
-            } else {
+        // Inicializar animaciones
+        initAnimations();
+
+        // Only auto-reload if this is the first page load
+        if (!isReloaded) {
+            // Set a flag to prevent infinite reload loop
+            sessionStorage.setItem('pageReloaded', 'true');
+
+            // Wait a short moment to let the browser start loading images
+            setTimeout(() => {
+                console.log('Auto-reloading page to ensure images load correctly...');
+                window.location.reload();
+            }, 500);
+        } else {
+            console.log('Page has been reloaded. Images should now appear correctly.');
+            // Remove the flag after the page has been successfully reloaded
+            // This ensures the reload will happen again if the user navigates to another project
+            setTimeout(() => {
+                sessionStorage.removeItem('pageReloaded');
+            }, 1000);
+        }
+    } else {
         // Proyecto no encontrado, redirigir a la página principal
         window.location.href = '/';
-            }
-        }
+    }
+}
+
+// The rest of your code remains unchanged
 
     // Actualizar el contenido de la página con los datos del proyecto
     function updateProjectContent(project) {
@@ -306,8 +264,3 @@
 
         // Cargar los datos del proyecto al cargar la página
         document.addEventListener('DOMContentLoaded', loadProjectData);
-function recargarPaginaAlCargar() {
-    location.reload();
-}
-
-window.onload = recargarPaginaAlCargar;
