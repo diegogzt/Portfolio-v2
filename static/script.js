@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
     statusText.setAttribute('data-current-model', 'llama');
 
     // Añadir mensaje inicial del bot
-    const initialMessage = "¡Hola MIDU! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. También puedo generar imágenes con el comando /imagen seguido de una descripción.";
+    const initialMessage = "¡Hola👋! Soy el asistente virtual de Diego. Puedo responder preguntas sobre su experiencia, proyectos y habilidades en desarrollo frontend. También puedo generar imágenes con el comando /imagen seguido de una descripción.";
     addMessage("bot", initialMessage);
 
     // Configurar el evento de cambio del selector de modelo

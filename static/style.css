@@ -14,7 +14,6 @@ html {
 
 body {
     animation: body 2s forwards 0.5s;
-    background-image: url('background.jpeg');
     cursor: url("cursor.png"), auto;
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
