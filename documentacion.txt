@@ -2,7 +2,7 @@
 
 ## DESCRIPCIÓN GENERAL
 
-Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desarrollador web de 18 años que reside en Barcelona y estudia en el instituto ITIC. La página web combina una presentación visual moderna con un chat interactivo alimentado por dos modelos de IA diferentes (Llama 3 y DeepSeek), permitiendo a los visitantes interactuar directamente con un asistente virtual que puede responder preguntas sobre la experiencia, habilidades y proyectos de Diego.
+Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desarrollador web de 18 años que reside en Barcelona y estudia en el instituto ITIC. La página web combina una presentación visual moderna con un chat interactivo alimentado por dos modelos de IA diferentes (Llama 3 y un generador de imágenes), permitiendo a los visitantes interactuar directamente con un asistente virtual que puede responder preguntas sobre la experiencia, habilidades y proyectos de Diego.
 
 ## TECNOLOGÍAS UTILIZADAS
 
@@ -16,8 +16,8 @@ Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desa
 ### Backend:
 - Node.js
 - Express.js (framework de servidor)
-- OpenAI API (para conexión con DeepSeek)
-- Llama API (para conexión con el modelo Llama 3)
+- LlamaAI API (para el chat principal)
+- Replicate API (para generación de imágenes)
 
 ### Despliegue:
 - Vercel (hosting y despliegue)
@@ -35,6 +35,8 @@ Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desa
 ### Estructura de carpetas:
 - `/static`: Contiene todos los archivos estáticos del frontend
   - `/static/img`: Imágenes de proyectos y elementos visuales
+  - `/static/svg`: Iconos y gráficos vectoriales
+- `/my-replicate-app`: Configuración específica para la generación de imágenes
 - Raíz del proyecto: Archivos de configuración y servidor
 
 ## FUNCIONALIDADES CLAVE
@@ -46,14 +48,17 @@ Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desa
 
 ### 2. Chat Interactivo con IA
 - Integración con dos modelos de IA diferentes:
-  - Llama 3 (modelo principal): modelo de 8B parámetros de Anthropic
-  - DeepSeek (modelo alternativo): modelo de chat de DeepSeek
-- Selector para cambiar entre modelos de IA
-- Manejo de errores y reintentos automáticos
-- Visualización clara de estados de carga y mensajes
+  - Llama 3 (modelo principal): modelo de chat de 8B parámetros
+  - Replicate (generador de imágenes): permite crear imágenes a partir de descripciones textuales
+- Selector para cambiar entre chat e generación de imágenes
+- Sistema de reintentos automáticos (hasta 3 intentos) en caso de fallos
+- Timeouts configurables (25s para chat, 60s para imágenes)
+- Indicadores visuales de estado y carga
+- Comandos especiales para generación de imágenes (/imagen, /generar)
 
 ### 3. Componentes UI Personalizados
-- Tooltip informativo para el selector de modelo
+- Avatar dinámico para usuario y bot
+- Timestamps en los mensajes
 - Efectos de escritura con Typed.js
 - Animaciones en scrolling y hover
 - Menú responsive para dispositivos móviles
@@ -63,12 +68,11 @@ Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desa
 ### Arquitectura del Backend
 1. El servidor Express maneja todas las peticiones en `server.js`
 2. La ruta `/chat` recibe peticiones POST con:
-   - Un mensaje del usuario
-   - El modelo seleccionado ('llama' o 'deepseek')
+   - El mensaje del usuario
+   - El modelo seleccionado ('llama' o 'replicate')
 3. Según el modelo seleccionado, se redirige la petición a:
-   - `handleLlamaRequest()` - Para solicitudes al modelo Llama 3
-   - `handleDeepSeekRequest()` - Para solicitudes al modelo DeepSeek
-4. Cada función formatea la solicitud según los requisitos de la respectiva API
+   - `handleLlamaRequest()` - Para chat con Llama 3
+   - `generateImage()` - Para generación de imágenes con Replicate
 
 ### Integración de Modelos de IA
 1. **Modelo Llama 3**:
@@ -76,22 +80,22 @@ Este proyecto es un portafolio personal interactivo para Diego Zaldivar, un desa
    - Configurado para usar el modelo "llama3-8b"
    - Las solicitudes incluyen un contexto personalizado sobre Diego
    
-2. **Modelo DeepSeek**:
-   - Utiliza la biblioteca `openai` redirigida a la API de DeepSeek
-   - Configurado para usar el modelo "deepseek-chat"
-   - Comparte el mismo contexto que el modelo Llama
+2. **Modelo Replicate**:
+   - Utiliza la biblioteca `replicate`
+   - Permite generar imágenes a partir de descripciones textuales
+   - Soporta diferentes formatos y resoluciones de salida
 
 ### Manejo de Errores
-- Timeouts para solicitudes prolongadas (30 segundos)
-- Reintentos automáticos en caso de fallos (hasta 3 intentos)
+- Timeouts diferenciados para chat (25s) e imágenes (60s)
+- Sistema de reintentos automáticos (hasta 3 intentos)
 - Mensajes específicos según el tipo de error
-- Opción para cambiar de modelo si uno falla persistentemente
+- Fallback a información de contacto si todos los reintentos fallan
 
 ## CONFIGURACIÓN Y DESPLIEGUE
 
-### Variables de Entorno
-- `OPENAI_API_KEY`: Clave API para DeepSeek
-- `LLAMA_API_KEY`: Clave API para Llama
+### Variables de Entorno Requeridas
+- `LLAMA_API_KEY`: Clave API para el modelo de chat Llama 3
+- `REPLICATE_API_TOKEN`: Token para el servicio de generación de imágenes
 - `PORT`: Puerto para el servidor (por defecto 3000)
 
 ### Configuración de Vercel
@@ -120,7 +124,7 @@ Para añadir un nuevo proyecto:
 
 ### Actualizar Modelos de IA
 Para cambiar o actualizar los modelos:
-1. Modificar la configuración en las funciones `handleLlamaRequest` o `handleDeepSeekRequest` en `server.js`
+1. Modificar la configuración en las funciones `handleLlamaRequest` o `generateImage` en `server.js`
 2. Actualizar los nombres de modelos y configuraciones según sea necesario
 3. Si se añade un nuevo modelo, actualizar la interfaz de usuario en `index.html` y la lógica en `script.js`
 
@@ -149,4 +153,4 @@ Para cambiar o actualizar los modelos:
 Para cualquier problema o mejora relacionada con este proyecto, contactar a:
 - Email: tovard799@gmail.com
 - Teléfono: +34 640 844 225
-- LinkedIn: https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/ 
+- LinkedIn: https://www.linkedin.com/in/diego-gabriel-zaldivar-tovar-473a9a252/

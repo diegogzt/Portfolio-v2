@@ -239,17 +239,17 @@ app.post('/chat', async (req, res) => {
             console.log(`Generando imagen con Replicate...`);
             try {
                 const imageUrl = await generateImage(imagePrompt);
-                botResponse = `¡He generado esta imagen para ti! [IMAGE_URL:${imageUrl}]`;
+                return res.status(200).json({ imageUrl }); // Responder solo con la URL de la imagen
             } catch (error) {
                 console.error('Error generando imagen con Replicate:', error);
-                botResponse = `Lo siento, hubo un problema al generar la imagen: ${error.message}`;
+                return res.status(500).json({ error: `Hubo un problema al generar la imagen: ${error.message}` });
             }
         } else {
             // Procesar solicitudes normales de texto con Llama
-            botResponse = await handleLlamaRequest(userMessage, new AbortController());
+            const botResponse = await handleLlamaRequest(userMessage, new AbortController());
+            return res.status(200).json({ response: botResponse });
         }
 
-        return res.status(200).json({ response: botResponse });
     } catch (error) {
         console.error(`Error en el endpoint de chat:`, error);
 
