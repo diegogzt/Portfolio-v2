@@ -50,7 +50,7 @@ function addMessage(role, message) {
         img.src = imageUrl;
         img.alt = "Generated Image";
         img.className = "w-full rounded-lg";
-        img.style.maxWidth = "100%";
+        img.style.maxWidth = "360px";
 
         // Loader mientras carga la imagen
         const loader = document.createElement("div");
