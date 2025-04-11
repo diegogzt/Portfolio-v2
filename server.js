@@ -196,7 +196,7 @@ async function generateImage(prompt) {
 
         // Usamos el modelo Flux Schnell de Replicate con tamaño personalizado
         const [output] = await replicate.run(
-            "black-forest-labs/flux-1.1-pro",
+            "black-forest-labs/flux-schnell",
             {
                 input: {
                     prompt: prompt,
