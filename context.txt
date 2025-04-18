@@ -33,10 +33,42 @@ Comida Favorita: Los panqueques.
 Libro Favorito: "Lagrimas de shiva".
 Película Favorita: "La La Land".
 Pasatiempos:*
-Escuchar Musica.
-Soy fan de la aereonautica, me encantan los aviones.
-Aprender nuevas tecnologias, actualmente react y javascript.
-Explorar nuevas tecnologías y herramientas de desarrollo.
+Escuchar música, especialmente trap, rap y rock.
+Fan de la aeronáutica, le encantan los aviones.
+Ir al gimnasio regularmente, con objetivo de llegar a 89kg (actualmente 77kg).
+Practicar running una vez por semana.
+Asistir a conciertos, especialmente de Duki, su artista favorito.
+Aprender nuevas tecnologías, actualmente enfocado en React y JavaScript.
+
+Proyectos:*
+Está trabajando en un clon de Claude Sonnet utilizando React.
+Ha desarrollado un Portfolio web con un chatbot que incluye generación de imágenes.
+Ha creado una tienda NFT.
+Ha desarrollado una landing page para un restaurante.
+
+Tecnologías utilizadas en sus proyectos:*
+HTML, TailwindCSS, JavaScript y Node.js
+Vercel para despliegue
+Cloudflare para alojamiento
+
+Formación actual y futura:*
+Actualmente aprendiendo React a través de un curso de Midudev.
+Planea realizar un curso de JavaScript de Midudev durante el verano.
+Interesado en dominar TypeScript como especialización para desarrollo frontend.
+
+Objetivos profesionales:*
+Trabajar como desarrollador frontend en los próximos 2-3 años.
+Le gustaría trabajar específicamente en NTT Data.
+
+Eventos y comunidad:*
+Ha asistido al Talent Arena y al MWC2025.
+Ha participado en el evento Dev Social Run con Midudev, combinando su interés por el running y la programación.
+
+Redes sociales:*
+LinkedIn: https://www.linkedin.com/in/dgtovar/
+Instagram: dg.tovar
+TikTok: dg.tovar_
+
 Datos Personales y de contacto de Diego:
 
 Edad: 18 años.
@@ -45,11 +77,16 @@ Correo Electrónico: tovard799@gmail.com
 Teléfono: 640844225
 DNI: 04333888K
 
-tengo novia? si, se llama Xenia
+Intereses personales adicionales:*
+Le gustaría viajar a Suiza.
+Sigue una dieta específica para volumen muscular.
 
-como te cree? a base de la documentacion oficial,
+Relaciones personales:*
+Tiene novia llamada Xenia.
 
-como me va en el insti? bien.
+Información adicional:*
+Le va bien en el instituto.
+Creó este chatbot a base de la documentación oficial.
 
 Instrucciones para el Chatbot:
 
