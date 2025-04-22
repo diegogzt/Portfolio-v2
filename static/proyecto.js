@@ -113,10 +113,9 @@ async function loadProjectData() {
             demoUrl: 'https://github.com/diegogzt/MCP-Weather.git',
             githubUrl: 'https://github.com/diegogzt/MCP-Weather.git',
             gallery: [
-                { url: 'img/res-index.png', title: 'Página principal' },
-                { url: 'img/rest-int.png', title: 'Visualización del menú' },
-                { url: 'img/reserva.png', title: 'Sistema de reservas' },
-                { url: 'img/menu.png', title: 'Menu de las comidas' },
+                { url: 'img/mcp-r2.png', title: 'Codigo TypeScript' },
+                { url: 'img/mcp-r3.png', title: 'Solicitud de herramienta en Claude' },
+                { url: 'img/mcp-r4.png', title: 'Respuesta del servicio de Claude conectado al MCP' },
             ]
         }
     ];
