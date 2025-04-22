@@ -96,6 +96,28 @@ async function loadProjectData() {
                 { url: 'img/reserva.png', title: 'Sistema de reservas' },
                 { url: 'img/menu.png', title: 'Menu de las comidas' },
             ]
+        },
+        {
+            id: 4,
+            title: 'MCP Weather',
+            category: 'Seridor MCP',
+            date: 'Abril 2025',
+            description: 'He creado un servidor MCP para que la gente pueda ver el tiempo en su ciudad y en otras ciudades a través de un servicio que use MCP por ejemplo claude',
+            technologies: ['Node.js', 'TypeScript', 'Python'],
+            features: [
+                'Lamada a la API de Open Meteo',
+                'Diferentes herramientas para el servidor',
+                'Conexión con servicios como Claude o ChatGPT',
+                'Codigo abierto',
+            ],
+            demoUrl: 'https://github.com/diegogzt/MCP-Weather.git',
+            githubUrl: 'https://github.com/diegogzt/MCP-Weather.git',
+            gallery: [
+                { url: 'img/res-index.png', title: 'Página principal' },
+                { url: 'img/rest-int.png', title: 'Visualización del menú' },
+                { url: 'img/reserva.png', title: 'Sistema de reservas' },
+                { url: 'img/menu.png', title: 'Menu de las comidas' },
+            ]
         }
     ];
 
