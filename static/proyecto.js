@@ -117,7 +117,9 @@ async function loadProjectData() {
                 { url: 'img/mcp-r3.png', title: 'Solicitud de herramienta en Claude' },
                 { url: 'img/mcp-r4.png', title: 'Respuesta del servicio de Claude conectado al MCP' },
             ]
-        }
+        },
+        
+
     ];
 
     // Encontrar el proyecto actual
@@ -359,3 +361,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // Inicializamos las animaciones por si hay elementos que ya existen en el DOM
     initAnimations();
 });
+

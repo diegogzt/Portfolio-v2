@@ -134,6 +134,11 @@ app.get('/proyecto-:id', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'proyecto.html'));
 });
 
+// Ruta para /ameri
+app.get('/ameri', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'ameri.html'));
+});
+
 // Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
 app.get('/:file', (req, res, next) => {
     const file = req.params.file;
