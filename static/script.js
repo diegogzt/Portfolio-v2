@@ -240,6 +240,9 @@ sendButton.addEventListener("click", function (event) {
 // Initialize the auto-sizing textarea when the page loads
 document.addEventListener('DOMContentLoaded', function () {
     areaAuto();
+    if (window.location.pathname === '/ameri') {
+        window.location.href = 'ameri.html';
+    }
 
     // Configurar el selector de modelo antes del mensaje inicial
     const modelSelector = document.getElementById('model-selector');
@@ -318,3 +321,5 @@ function setupTooltip() {
         });
     }
 }
+
+
