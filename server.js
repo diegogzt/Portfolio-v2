@@ -146,21 +146,27 @@ app.get("/ameri", (req, res) => {
 // Ruta para la landing page de GTA
 app.get("/gta", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "static", "live-landing-gta-vi","dist", "index.html")
+    path.join(__dirname, "static", "live-landing-gta-vi", "dist", "index.html")
   );
 });
 
 //ruta para links
 app.get("/link", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "static", "link", "index.html")
-  );
+  res.sendFile(path.join(__dirname, "static", "link", "index.html"));
 });
 // Ruta para dashpilot que redirige a la aplicación de dashboard
 app.get("/dashpilot", (req, res) => {
   console.log("Redirigiendo a DashPilot...");
   res.redirect("https://nextjs-dashboard-weld-tau-61.vercel.app/");
 });
+
+//ruta para linkedin
+app.get("/linkedin", (req, res) => {
+  console.log("Redirigiendo a Linkedin...");
+  res.redirect("www.linkedin.com/in/dgtovar");
+});
+
+
 app.use(
   "/gta-assets",
   express.static(path.join(__dirname, "static", "live-landing-gta-vi"))
@@ -279,11 +285,9 @@ app.post("/chat", async (req, res) => {
         return res.status(200).json({ imageUrl }); // Responder solo con la URL de la imagen
       } catch (error) {
         console.error("Error generando imagen con Replicate:", error);
-        return res
-          .status(500)
-          .json({
-            error: `Hubo un problema al generar la imagen: ${error.message}`,
-          });
+        return res.status(500).json({
+          error: `Hubo un problema al generar la imagen: ${error.message}`,
+        });
       }
     } else {
       // Procesar solicitudes normales de texto con Llama
