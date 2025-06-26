@@ -163,7 +163,7 @@ app.get("/dashpilot", (req, res) => {
 //ruta para linkedin
 app.get("/linkedin", (req, res) => {
   console.log("Redirigiendo a Linkedin...");
-  res.redirect("www.linkedin.com/in/dgtovar");
+  res.redirect("https://linkedin.com/in/dgtovar");
 });
 
 
