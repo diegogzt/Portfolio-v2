@@ -1,9 +1,9 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import LlamaAI from 'llamaai';
-import Replicate from 'replicate';
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import LlamaAI from "llamaai";
+import Replicate from "replicate";
 
 // Configuración inicial
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,8 @@ dotenv.config();
 
 // Variables de entorno y configuración
 const PORT = process.env.PORT || 3000;
-const LLAMA_API_KEY = process.env.LLAMA_API_KEY || '39de9221-82d9-4052-b6d3-433f54b3f4fd';
+const LLAMA_API_KEY =
+  process.env.LLAMA_API_KEY || "39de9221-82d9-4052-b6d3-433f54b3f4fd";
 const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
 // Inicialización de Express
@@ -21,16 +22,16 @@ app.use(express.json());
 
 // Servir archivos estáticos con ambas rutas
 // Ruta con '/static' para compatibilidad con Vercel
-app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use("/static", express.static(path.join(__dirname, "static")));
 // Ruta sin prefijo para desarrollo local
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, "static")));
 
 // Configuración del cliente Llama
 const llamaAPI = new LlamaAI(LLAMA_API_KEY);
 
 // Inicializar el cliente de Replicate
 const replicate = new Replicate({
-    auth: REPLICATE_API_TOKEN,
+  auth: REPLICATE_API_TOKEN,
 });
 
 // Contexto del chatbot
@@ -105,192 +106,233 @@ TIENES QUE SER CLARO Y CONSISO, NO PUEDES ENVIAR MENSAJES LARGOS, SIEMPRE INTENT
 
 // Configuración de CORS para todas las rutas
 const setCorsHeaders = (res) => {
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, o-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
-    return res;
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, o-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+  return res;
 };
 
 // Middleware global para CORS
 app.use((req, res, next) => {
-    setCorsHeaders(res);
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-    next();
+  setCorsHeaders(res);
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
 });
 
 // Rutas
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "static", "index.html"));
 });
 
 // Ruta dinámica para páginas de proyectos
-app.get('/proyecto-:id', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'proyecto.html'));
+app.get("/proyecto-:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "static", "proyecto.html"));
 });
 
 // Ruta para /ameri
-app.get('/ameri', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'ameri.html'));
+app.get("/ameri", (req, res) => {
+  res.sendFile(path.join(__dirname, "static", "ameri.html"));
 });
 
+// Ruta para la landing page de GTA
+app.get("/gta", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "static", "live-landing-gta-vi","dist", "index.html")
+  );
+});
+
+//ruta para links
+app.get("/link", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "static", "link", "index.html")
+  );
+});
+// Ruta para dashpilot que redirige a la aplicación de dashboard
+app.get("/dashpilot", (req, res) => {
+  console.log("Redirigiendo a DashPilot...");
+  res.redirect("https://nextjs-dashboard-weld-tau-61.vercel.app/");
+});
+app.use(
+  "/gta-assets",
+  express.static(path.join(__dirname, "static", "live-landing-gta-vi"))
+);
 // Ruta específica para archivos estáticos que podrían no ser manejados correctamente por el middleware
-app.get('/:file', (req, res, next) => {
-    const file = req.params.file;
-    // Si el archivo existe en la carpeta static, lo servimos
-    const filePath = path.join(__dirname, 'static', file);
-    try {
-        if (path.extname(file)) { // Si tiene extensión, probablemente es un archivo estático
-            return res.sendFile(filePath);
-        }
-    } catch (error) {
-        // Si hay un error, continuamos con la siguiente ruta
+app.get("/:file", (req, res, next) => {
+  const file = req.params.file;
+  // Si el archivo existe en la carpeta static, lo servimos
+  const filePath = path.join(__dirname, "static", file);
+  try {
+    if (path.extname(file)) {
+      // Si tiene extensión, probablemente es un archivo estático
+      return res.sendFile(filePath);
     }
-    next();
+  } catch (error) {
+    // Si hay un error, continuamos con la siguiente ruta
+  }
+  next();
 });
 
 // Función para manejar la solicitud a Llama
 async function handleLlamaRequest(userMessage, controller) {
-    // Configurar la solicitud según la documentación de Llama
-    const apiRequestJson = {
-        model: "llama3-8b",
-        messages: [
-            { role: "system", content: CUSTOM_CONTEXT },
-            { role: "user", content: userMessage }
-        ],
-        stream: false,
-        temperature: 0.7,
-        max_tokens: 500
-    };
+  // Configurar la solicitud según la documentación de Llama
+  const apiRequestJson = {
+    model: "llama3-8b",
+    messages: [
+      { role: "system", content: CUSTOM_CONTEXT },
+      { role: "user", content: userMessage },
+    ],
+    stream: false,
+    temperature: 0.7,
+    max_tokens: 500,
+  };
 
-    // Utilizamos un AbortController para manejar el timeout
-    const abortController = new AbortController();
-    const timeout = setTimeout(() => abortController.abort(), 30000);
+  // Utilizamos un AbortController para manejar el timeout
+  const abortController = new AbortController();
+  const timeout = setTimeout(() => abortController.abort(), 30000);
 
-    try {
-        const response = await llamaAPI.run(apiRequestJson, {
-            signal: controller.signal
-        });
+  try {
+    const response = await llamaAPI.run(apiRequestJson, {
+      signal: controller.signal,
+    });
 
-        clearTimeout(timeout);
-        console.log('Respuesta de Llama API:', JSON.stringify(response, null, 2));
+    clearTimeout(timeout);
+    console.log("Respuesta de Llama API:", JSON.stringify(response, null, 2));
 
-        // Procesar la respuesta según el formato de Llama
-        if (response.choices && response.choices.length > 0 && response.choices[0].message) {
-            return response.choices[0].message.content;
-        } else if (response.content) {
-            return response.content;
-        } else {
-            return JSON.stringify(response);
-        }
-    } catch (error) {
-        clearTimeout(timeout);
-        throw error;
+    // Procesar la respuesta según el formato de Llama
+    if (
+      response.choices &&
+      response.choices.length > 0 &&
+      response.choices[0].message
+    ) {
+      return response.choices[0].message.content;
+    } else if (response.content) {
+      return response.content;
+    } else {
+      return JSON.stringify(response);
     }
+  } catch (error) {
+    clearTimeout(timeout);
+    throw error;
+  }
 }
 
 // Función actualizada para generar imágenes con Replicate con resolución específica
 async function generateImage(prompt) {
-    try {
-        console.log('Generando imagen con prompt:', prompt);
+  try {
+    console.log("Generando imagen con prompt:", prompt);
 
-        // Usamos el modelo Flux Schnell de Replicate con tamaño personalizado
-        const [output] = await replicate.run(
-            "black-forest-labs/flux-schnell",
-            {
-                input: {
-                    prompt: prompt,
-                    width: 300,    // Ancho personalizado
-                    height: 300    // Altura personalizada
-                },
-            }
-        );
+    // Usamos el modelo Flux Schnell de Replicate con tamaño personalizado
+    const [output] = await replicate.run("black-forest-labs/flux-schnell", {
+      input: {
+        prompt: prompt,
+        width: 300, // Ancho personalizado
+        height: 300, // Altura personalizada
+      },
+    });
 
-        console.log('Imagen generada:', output);
-        return output; // URL de la imagen generada
-    } catch (error) {
-        console.error('Error al generar imagen:', error);
-        throw error;
-    }
+    console.log("Imagen generada:", output);
+    return output; // URL de la imagen generada
+  } catch (error) {
+    console.error("Error al generar imagen:", error);
+    throw error;
+  }
 }
 
 // Endpoint unificado del chat
-app.post('/chat', async (req, res) => {
-    const userMessage = req.body.message;
-    const model = req.body.model || 'llama'; // 'llama' o 'replicate'
+app.post("/chat", async (req, res) => {
+  const userMessage = req.body.message;
+  const model = req.body.model || "llama"; // 'llama' o 'replicate'
 
-    if (!userMessage) {
-        return res.status(400).json({ error: "Mensaje del usuario no proporcionado." });
+  if (!userMessage) {
+    return res
+      .status(400)
+      .json({ error: "Mensaje del usuario no proporcionado." });
+  }
+
+  try {
+    let botResponse;
+
+    // Detectar si es una solicitud de generación de imagen
+    const isImageRequest =
+      userMessage.toLowerCase().startsWith("/imagen ") ||
+      userMessage.toLowerCase().startsWith("/image ") ||
+      userMessage.toLowerCase().startsWith("/generar ");
+
+    if (isImageRequest) {
+      // Extraer el prompt para la imagen
+      const imagePrompt = userMessage
+        .substring(userMessage.indexOf(" ") + 1)
+        .trim();
+
+      console.log(`Generando imagen con Replicate...`);
+      try {
+        const imageUrl = await generateImage(imagePrompt);
+        return res.status(200).json({ imageUrl }); // Responder solo con la URL de la imagen
+      } catch (error) {
+        console.error("Error generando imagen con Replicate:", error);
+        return res
+          .status(500)
+          .json({
+            error: `Hubo un problema al generar la imagen: ${error.message}`,
+          });
+      }
+    } else {
+      // Procesar solicitudes normales de texto con Llama
+      const botResponse = await handleLlamaRequest(
+        userMessage,
+        new AbortController()
+      );
+      return res.status(200).json({ response: botResponse });
+    }
+  } catch (error) {
+    console.error(`Error en el endpoint de chat:`, error);
+
+    if (error.name === "AbortError") {
+      return res
+        .status(504)
+        .json({ error: "La solicitud tomó demasiado tiempo en responder." });
     }
 
-    try {
-        let botResponse;
-
-        // Detectar si es una solicitud de generación de imagen
-        const isImageRequest =
-            userMessage.toLowerCase().startsWith("/imagen ") ||
-            userMessage.toLowerCase().startsWith("/image ") ||
-            userMessage.toLowerCase().startsWith("/generar ");
-
-        if (isImageRequest) {
-            // Extraer el prompt para la imagen
-            const imagePrompt = userMessage.substring(userMessage.indexOf(' ') + 1).trim();
-
-            console.log(`Generando imagen con Replicate...`);
-            try {
-                const imageUrl = await generateImage(imagePrompt);
-                return res.status(200).json({ imageUrl }); // Responder solo con la URL de la imagen
-            } catch (error) {
-                console.error('Error generando imagen con Replicate:', error);
-                return res.status(500).json({ error: `Hubo un problema al generar la imagen: ${error.message}` });
-            }
-        } else {
-            // Procesar solicitudes normales de texto con Llama
-            const botResponse = await handleLlamaRequest(userMessage, new AbortController());
-            return res.status(200).json({ response: botResponse });
-        }
-
-    } catch (error) {
-        console.error(`Error en el endpoint de chat:`, error);
-
-        if (error.name === 'AbortError') {
-            return res.status(504).json({ error: "La solicitud tomó demasiado tiempo en responder." });
-        }
-
-        return res.status(500).json({
-            error: "Error al procesar la solicitud.",
-            details: error.message
-        });
-    }
+    return res.status(500).json({
+      error: "Error al procesar la solicitud.",
+      details: error.message,
+    });
+  }
 });
 
 // Endpoint para generar imágenes directamente
-app.post('/generate-image', async (req, res) => {
-    const { prompt } = req.body;
+app.post("/generate-image", async (req, res) => {
+  const { prompt } = req.body;
 
-    if (!prompt) {
-        return res.status(400).json({ error: "Se requiere un prompt para generar la imagen." });
-    }
+  if (!prompt) {
+    return res
+      .status(400)
+      .json({ error: "Se requiere un prompt para generar la imagen." });
+  }
 
-    try {
-        const imageUrl = await generateImage(prompt);
-        return res.status(200).json({ imageUrl });
-    } catch (error) {
-        console.error('Error en el endpoint de generación de imágenes:', error);
-        return res.status(500).json({
-            error: "Error al generar la imagen.",
-            details: error.message
-        });
-    }
+  try {
+    const imageUrl = await generateImage(prompt);
+    return res.status(200).json({ imageUrl });
+  } catch (error) {
+    console.error("Error en el endpoint de generación de imágenes:", error);
+    return res.status(500).json({
+      error: "Error al generar la imagen.",
+      details: error.message,
+    });
+  }
 });
 
 // Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor unificado ejecutándose en http://localhost:${PORT}`);
-    console.log('Soporta modelos: Llama y Replicate');
+  console.log(`Servidor unificado ejecutándose en http://localhost:${PORT}`);
+  console.log("Soporta modelos: Llama y Replicate");
 });
