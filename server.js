@@ -154,6 +154,18 @@ app.get("/gta", (req, res) => {
 app.get("/link", (req, res) => {
   res.sendFile(path.join(__dirname, "static", "link", "index.html"));
 });
+
+//ruta para redirigir a amerai
+app.get("/amerai", (req, res) => {
+  res.redirect("https://amer-ai-next-app.vercel.app/");
+});
+
+//ruta para redirigir a amerai/blog
+app.get("/amerai", (req, res) => {
+  res.redirect("https://amer-ai-next-app.vercel.app/blog");
+});
+
+
 // Ruta para dashpilot que redirige a la aplicación de dashboard
 app.get("/dashpilot", (req, res) => {
   console.log("Redirigiendo a DashPilot...");
