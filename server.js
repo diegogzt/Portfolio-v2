@@ -161,7 +161,7 @@ app.get("/amerai", (req, res) => {
 });
 
 //ruta para redirigir a amerai/blog
-app.get("/amerai", (req, res) => {
+app.get("/blog", (req, res) => {
   res.redirect("https://amer-ai-next-app.vercel.app/blog");
 });
 
