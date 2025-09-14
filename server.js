@@ -179,6 +179,12 @@ app.get("/linkedin", (req, res) => {
 });
 
 
+//ruta para markview
+app.get("/markview", (req, res) => {
+  console.log("Redirigiendo a markview...");
+  res.redirect("https://markview-hazel.vercel.app/");
+});
+
 app.use(
   "/gta-assets",
   express.static(path.join(__dirname, "static", "live-landing-gta-vi"))
